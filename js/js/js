@@ -15,7 +15,6 @@ var s=dt.getSeconds();
 if(h<10){h="0"+h;}
 if(m<10){m="0"+m;}
 if(s<10){s="0"+s;}
-document.getElementById("timeShow").innerHTML =  "现在的时间为："+y+"年"+mm+"月"+d+"日"+weekday[day]+"      
-"+h+":"+m+":"+s+"";
+document.getElementById("timeShow").innerHTML =  "现在的时间为："+y+"年"+mm+"月"+d+"日"+weekday[day]+"&nbsp"+h+":"+m+":"+s+"";
 t = setTimeout(time,1000); //设定定时器，循环执行 
 }
