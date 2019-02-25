@@ -1,3 +1,5 @@
+
+//
 var t = null;
 t = setTimeout(time,1000);//开始执行
 function time()
