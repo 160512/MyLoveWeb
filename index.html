@@ -1,133 +1,150 @@
-<!doctype html>
+﻿<!doctype html>
 
 <html>
- 
+
 <head>
-<meta charset="utf-8">
-<title>简易</title>
-<link rel="stylesheet" type="text/css" href="./css/indexcss.css" />
-<script src="./js/js.js"></script>
+    <script src="./js/jquery.js"></script>
+    <meta charset="utf-8">
+    <title>简易</title>
+    <link rel="stylesheet" type="text/css" href="./css/indexcss.css" />
+    <script src="./js/js.js"></script>
 </head>
- 
+
 <body>
-	<div id="top"><!--顶部容器-->
-	<div id="timeShow"></div><!--时间-->
-	</div>
-	
-	<div id="curriculum"><!--表容器-->
-	<table id="curriculum"><!--表格-->
-	
-	<tr id="week"><!--表头-->
-	<td id="Festivals">节次</td>
-	<td id="time">时间</td>
-	<td id="Monday">星期一</td>
-	<td id="Tuesday">星期二</td>
-	<td id="Wednesday">星期三</td>
-	<td id="Thursday">星期四</td>
-	<td id="Friday">星期五</td>
-	<td id="Saturday">星期六</td>
-	<td id="Sunday">星期天</td>
-	</tr>
-	
-	<tr id="MPreparation"><!--上午预备-->
-	<td colspan="2">7:40</td>
-	<td colspan="7">预备</td>
-	</tr>
-	
-	<tr id="First"><!--第一节-->
-	<td>1</td>
-	<td>7:50-8:35</td>
-	<td rowspan="2">NULL</td>
-	<td rowspan="2">NULL</td>
-	<td rowspan="2">NULL</td>
-	<td rowspan="2">计算机</td>
-	<td rowspan="2">工程数学</td>
-	<td rowspan="2">数据库</td>
-	<td rowspan="2">NULL</td>
-	</tr>
-	
-	<tr id="Second"><!--第二节-->
-	<td>2</td>
-	<td>8:45-9:30</td>
-	</tr>
-	
-	<tr id="Third"><!--第三节-->
-	<td>3</td>
-	<td>9:50-10:35</td>
-	<td rowspan="2">毛概</td>
-	<td rowspan="2">Python</td>
-	<td rowspan="2">毛概</td>
-	<td rowspan="2">计算机</td>
-	<td rowspan="2">英语</td>
-	<td rowspan="2">数据库</td>
-	<td rowspan="2">NULL</td>
-	</tr>
-	
-	<tr id="Fourth"><!--第四节-->
-	<td>4</td>
-	<td>10:45-11:30</td>
-	</tr>
-	
-	<tr id="APreparation"><!--下午预备-->
-	<td colspan="2">14:10</td>
-	<td colspan="7">预备</td>
-	</tr>
-	
-	<tr id="Fifth"><!--第五节-->
-	<td>5</td>
-	<td>9:50-10:35</td>
-	<td rowspan="2">NULL</td>
-	<td rowspan="2">NULL</td>
-	<td rowspan="2">NULL</td>
-	<td rowspan="2">体育</td>
-	<td rowspan="2">创业</td>
-	<td rowspan="2">NULL</td>
-	<td rowspan="2">NULL</td>
-	</tr>
-	
-	<tr id="Sixth"><!--第六节-->
-	<td>6</td>
-	<td>15:15-16:00</td>
-	</tr>
-	
-	<tr id="Seventh"><!--第七节-->
-	<td>7</td>
-	<td>16:10-16:55</td>
-	<td rowspan="2">英语</td>
-	<td rowspan="2">选修食品</td>
-	<td rowspan="2">NULL</td>
-	<td rowspan="2">NULL</td>
-	<td rowspan="2">Python</td>
-	<td rowspan="2">NULL</td>
-	<td rowspan="2">NULL</td>
-	</tr>
-	
-	<tr id="Eighth"><!--第八节-->
-	<td>8</td>
-	<td>17:05-17:50</td>
-	</tr>
-	
-	<tr id="Ninth"><!--第九节-->
-	<td>9</td>
-	<td>19:00-19:45</td>
-	<td rowspan="2">NULL</td>
-	<td rowspan="2">NULL</td>
-	<td rowspan="2">NULL</td>
-	<td rowspan="2">NULL</td>
-	<td rowspan="2">NULL</td>
-	<td rowspan="2">NULL</td>
-	<td rowspan="2">NULL</td>
-	</tr>
-	
-	<tr id="Tenth"><!--第十节-->
-	<td>10</td>
-	<td>19:55-20:40</td>
-	</tr>
-	
-	</table>
-	</div>
-	
-	
+    <div id="top">
+        <!--顶部容器-->
+        <p id="timeShow"><!--时间-->
+    </div>
+
+    <div id="curriculum">
+        <!--表容器-->
+        <table id="curriculum">
+            <!--表格-->
+
+            <tr class="header" id="week">
+                <!--表头-->
+                <td id="Festivals">节次</td>
+                <td id="time">时间</td>
+                <td id="Monday">星期一</td>
+                <td id="Tuesday">星期二</td>
+                <td id="Wednesday">星期三</td>
+                <td id="Thursday">星期四</td>
+                <td id="Friday">星期五</td>
+                <td id="Saturday">星期六</td>
+                <td id="Sunday">星期天</td>
+            </tr>
+
+            <tr class="time" id="MPreparation">
+                <!--上午预备-->
+                <td colspan="2">7:40</td>
+                <td colspan="7">预备</td>
+            </tr>
+
+            <tr id="First">
+                <!--第一节-->
+                <td class="time">1</td>
+                <td class="time">7:50-8:35</td>
+                <td class="class" rowspan="2"><p id="class11">NULL<p id="room11">NULL</td>
+                <td class="class" rowspan="2"><p id="class21">NULL<p id="room21">NULL</td>
+                <td class="class" rowspan="2"><p id="class31">NULL<p id="room31">NULL</td>
+                <td class="class" rowspan="2"><p id="class41">计算机2-15周<p id="room41">@Z304</td>
+                <td class="class" rowspan="2"><p id="class51">数学2-19周<p id="room51">@2506</td>
+                <td class="class" rowspan="2"><p id="class61">数据库2-20周<p id="room61">Z302</td>
+                <td class="class" rowspan="2"><p id="class71">NULL<p id="room71">NULL</td>
+            </tr>
+
+            <tr id="Second">
+                <!--第二节-->
+                <td class="time">2</td>
+                <td class="time">8:45-9:30</td>
+            </tr>
+
+            <tr id="Third">
+                <!--第三节-->
+                <td class="time">3</td>
+                <td class="time">9:50-10:35</td>
+                <td class="class" rowspan="2"><p id="class12">毛概2-19周<p id="room12">@北阶104</td>
+                <td class="class" rowspan="2"><p id="class22">Python2-20周<p id="room22">@Z506</td>
+                <td class="class" rowspan="2"><p id="class32">毛概2-19周<p id="room32">@2510</td>
+                <td class="class" rowspan="2"><p id="class42">计算机2-15周<p id="room42">@Z304</td>
+                <td class="class" rowspan="2"><p id="class52">英语2-17周<p id="room52">@2502</td>
+                <td class="class" rowspan="2"><p id="class62">数据库2-20单周<p id="room62">@Z302</td>
+                <td class="class" rowspan="2"><p id="class72">NULL<p id="room72">NULL</td>
+            </tr>
+
+            <tr id="Fourth">
+                <!--第四节-->
+                <td class="time">4</td>
+                <td class="time">10:45-11:30</td>
+            </tr>
+
+            <tr class="time" id="APreparation">
+                <!--下午预备-->
+                <td colspan="2">14:10</td>
+                <td colspan="7">预备</td>
+            </tr>
+
+            <tr id="Fifth">
+                <!--第五节-->
+                <td class="time">5</td>
+                <td class="time">9:50-10:35</td>
+                <td class="class" rowspan="2"><p id="class13">NULL<p id="room13">NULL</td>
+                <td class="class" rowspan="2"><p id="class23">NULL<p id="room23">NULL</td>
+                <td class="class" rowspan="2"><p id="class33">NULL<p id="room33">NULL</td>
+                <td class="class" rowspan="2"><p id="class43">体育2-17周<p id="room43">@操场</td>
+                <td class="class" rowspan="2"><p id="class53">创业2-16周<p id="room53">@2506</td>
+                <td class="class" rowspan="2"><p id="class63">NULL<p id="room63">NULL</td>
+                <td class="class" rowspan="2"><p id="class73">NULL<p id="room73">NULL</td>
+            </tr>
+
+            <tr id="Sixth">
+                <!--第六节-->
+                <td class="time">6</td>
+                <td class="time">15:15-16:00</td>
+            </tr>
+
+            <tr id="Seventh">
+                <!--第七节-->
+                <td class="time">7</td>
+                <td class="time">16:10-16:55</td>
+                <td class="class" rowspan="2"><p id="class14">英语2-17周<p id="room14">@综合楼209东</td>
+                <td class="class" rowspan="2"><p id="class24">NULL<p id="room24">NULL</td>
+                <td class="class" rowspan="2"><p id="class34">NULL<p id="room34">NULL</td>
+                <td class="class" rowspan="2"><p id="class44">NULL<p id="room44">NULL</td>
+                <td class="class" rowspan="2"><p id="class54">Python2-20周<p id="room54">@Z506</td>
+                <td class="class" rowspan="2"><p id="class64">NULL<p id="room64">NULL</td>
+                <td class="class" rowspan="2"><p id="class74">NULL<p id="room74">NULL</td>
+            </tr>
+
+            <tr id="Eighth">
+                <!--第八节-->
+                <td class="time">8</td>
+                <td class="time">17:05-17:50</td>
+            </tr>
+
+            <tr id="Ninth">
+                <!--第九节-->
+                <td class="time">9</td>
+                <td class="time">19:00-19:45</td>
+                <td class="class" rowspan="2"><p id="class15">NULL<p id="room15">NULL</td>
+                <td class="class" rowspan="2"><p id="class25">选修食品4-12周<p id="room25">北阶104</td>
+                <td class="class" rowspan="2"><p id="class35">NULL<p id="room35">NULL</td>
+                <td class="class" rowspan="2"><p id="class45">NULL<p id="room45">NULL</td>
+                <td class="class" rowspan="2"><p id="class55">NULL<p id="room55">NULL</td>
+                <td class="class" rowspan="2"><p id="class65">NULL<p id="room65">NULL</td>
+                <td class="class" rowspan="2"><p id="class75">NULL<p id="room75">NULL</td>
+            </tr>
+
+            <tr id="Tenth">
+                <!--第十节-->
+                <td class="time">10</td>
+                <td class="time">19:55-20:40</td>
+            </tr>
+
+        </table>
+    </div>
+
+
 </body>
- 
+
 </html>

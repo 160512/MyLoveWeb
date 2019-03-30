@@ -1,53 +1,133 @@
 /*全局样式*/
-*{padding:0;margin:0;}
-div,dl,dt,dd,form,h1,h2,h3,h4,h5,h6,img,ol,ul,li,table,th,td,p,span,a{border:0;}
-img,input{border:none;vertical-align:middle;}
-body{font-family:微软雅黑,Tahoma,Arial,Helvetica,"宋体";font-size:12px;text-align:center;background:#FFF;color:#000;}
-html{overflow-y:scroll;}
-ul,ol{list-style-type:none;}
-th,td,input{font-size:12px;}
-h3{font-size:14px;}
-button{border:none;cursor:pointer;font-size:12px;background-color:transparent;}
-select{border-width:1px;_zoom:1;border-style:solid;padding-top:2px;font-size:12px;}
-.clear{clear:both;font-size:1px;height:0;visibility:hidden;line-height:0;}
-.clearfix:after{content:"";display:block;clear:both;}
-.clearfix{zoom:1;}
-a:link,a:visited{text-decoration:none;color:#333;}
-a:hover,a:active{text-decoration:underline;color:#f60;}
+* {
+    padding: 0;
+    margin: 0;
+}
+
+div, dl, dt, dd, form, h1, h2, h3, h4, h5, h6, img, ol, ul, li, table, th, td, p, span, a {
+    border: 0;
+}
+
+img, input {
+    border: none;
+    vertical-align: middle;
+}
+
+body {
+    font-family: 微软雅黑,Tahoma,Arial,Helvetica,"宋体";
+    font-size: 12px;
+    text-align: center;
+    background: #FFF;
+    color: #000;
+}
+
+html {
+    overflow-y: scroll;
+}
+
+ul, ol {
+    list-style-type: none;
+}
+
+th, td, input {
+    font-size: 12px;
+}
+
+h3 {
+    font-size: 14px;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    background-color: transparent;
+}
+
+select {
+    border-width: 1px;
+    _zoom: 1;
+    border-style: solid;
+    padding-top: 2px;
+    font-size: 12px;
+}
+
+.clear {
+    clear: both;
+    font-size: 1px;
+    height: 0;
+    visibility: hidden;
+    line-height: 0;
+}
+
+.clearfix:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.clearfix {
+    zoom: 1;
+}
+
+a:link, a:visited {
+    text-decoration: none;
+    color: #333;
+}
+
+a:hover, a:active {
+    text-decoration: underline;
+    color: #f60;
+}
 /*顶部预留框架*/
-div#top{
-	height:20px;
-	width:100%;
+div#top {
+    height: 20px;
+    width: 100%;
 }
 /*时间框架*/
-div#timeShow{
-	width:100%;
-	height:100%;
-	text-align:right;
+p#timeShow {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    margin-left: 20%;
 }
 /*课表框架*/
-div#curriculum{
-	height:300px;
-	width:100%;
+div#curriculum {
+    height: 300px;
+    width: 100%;
 }
 /*表格内部布局*/
-table#curriculum{
-	text-align: center;
-	border-collapse: collapse;
-	height:100%;
-	margin:0 auto;
-} 
-/*表格边框*/
-table#curriculum td{
-	border:1px solid #0094ff;
-} 
-/*表格宽度*/
-table#curriculum td#Festivals{
-	width:3%;
-} 
-table#curriculum td#time{
-	width:13%;
-} 
-table#curriculum td#Monday,td#Tuesday,td#Wednesday,td#Thursday,td#Friday,td#Saturday,td#Sunday{
-	width:12%;
-} 
+table#curriculum {
+    text-align: center;
+    border-collapse: collapse;
+    height: 100%;
+    margin: 0 auto;
+}
+    /*表格边框*/
+    table#curriculum td {
+        border: 1px solid #0094ff;
+    }
+        /*表格宽度*/
+        table#curriculum td#Festivals {
+            width: 3%;
+        }
+
+        table#curriculum td#time {
+            width: 13%;
+        }
+
+        table#curriculum td#Monday, td#Tuesday, td#Wednesday, td#Thursday, td#Friday, td#Saturday, td#Sunday {
+            width: 12%;
+        }
+/*表格配色*/
+tr.header, tr.time, td.time {
+    background-color: #FFFFCC;
+}
+
+td.class {
+    background-color: #CCFFFF;
+}
+
+    td.class:hover {
+        background: #FFCCCC;
+    }
