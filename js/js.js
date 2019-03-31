@@ -1,7 +1,7 @@
-//顶部时间
+//启动设置
 var start = null;
 start = setTimeout(topTime, 500);//开始执行
-
+//顶部时间
 function topTime() {
     clearTimeout(start);//清除定时器
 
@@ -37,11 +37,13 @@ function topTime() {
     document.getElementById("timeShow").innerHTML = "当前时间&nbsp" + y + "年" + mm + "月" + d + "日" + weekday[day] + "&nbsp" + h + ":" + m + ":" + s + "&nbsp" + "本学期第" + weeks + "周";
     //选择课表
     curriculumSwitch(nowDate);
+    //格式化课表
+    curriculumFormat();
     //设定定时器，循环执行
     start = setTimeout(topTime, 500);
 }
 
-
+//选择课表
 function curriculumSwitch(nowDate){
     /*
         选择父系Css
@@ -97,7 +99,7 @@ function curriculumSwitch(nowDate){
     if (SchoolTime5th < nowTime && nowTime < BreakTime5th) {
         nowClass = 5;
     }
-
+    //判断星期
     var nowWeek = 0;
     switch (day) {
         case 0:
@@ -125,5 +127,26 @@ function curriculumSwitch(nowDate){
 
     var nowroom = "#class" + nowWeek + nowClass;
     $(nowroom).parent('.class').css("backgroundColor", "#FFCCCC");
+}
 
+//修改课表清空NULL
+function curriculumFormat() {
+    //选择课程教室
+    for (var week = 1; week <= 7; week++) {
+        for (var course = 1; course <= 5; course++) {
+            var classReturn = "#class" + week + course;
+            var roomReturn = "#room" + week + course;
+            //判断是非为NULL
+            //var classText = document.getElementById(classReturn);
+            var classText = $(classReturn).text();
+            if (classText == "NULL") {
+                $(classReturn).html("&nbsp");
+            }
+            //var roomText = document.getElementById(roomReturn);
+            var roomText = $(roomReturn).text();
+            if (roomText == "NULL") {
+                $(roomReturn).html("&nbsp");
+            }
+        }
+    }
 }
