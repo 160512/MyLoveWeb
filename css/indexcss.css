@@ -86,9 +86,10 @@ div#top {
 }
 /*时间框架*/
 p#timeShow {
-    width: 100%;
+    width: 900px;
     height: 100%;
     text-align: right;
+    margin:auto;
 }
 /*课表框架*/
 div#curriculum {
