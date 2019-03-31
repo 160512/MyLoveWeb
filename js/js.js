@@ -39,6 +39,8 @@ function topTime() {
     curriculumSwitch(nowDate);
     //格式化课表
     curriculumFormat();
+    //判断单双周
+    coursesSwitch(weeks);
     //设定定时器，循环执行
     start = setTimeout(topTime, 500);
 }
@@ -129,7 +131,7 @@ function curriculumSwitch(nowDate){
     $(nowroom).parent('.class').css("backgroundColor", "#FFCCCC");
 }
 
-//修改课表清空NULL
+//修改课表清空格式化NULL内容
 function curriculumFormat() {
     //选择课程教室
     for (var week = 1; week <= 7; week++) {
@@ -146,6 +148,66 @@ function curriculumFormat() {
             var roomText = $(roomReturn).text();
             if (roomText == "NULL") {
                 $(roomReturn).html("&nbsp");
+            }
+        }
+    }
+}
+
+//返回#classXX课程
+function courseSwitch() {
+    for (var week = 1; week <= 7; week++) {
+        for (var course = 1; course <= 5; course++) {
+            var courseReturn = "#class" + week + course;
+            return courseReturn;
+        }
+    }
+}
+
+//返回#roomXX教室
+function roomSwitch() {
+    for (var week = 1; week <= 7; week++) {
+        for (var course = 1; course <= 5; course++) {
+            var roomReturn = "#class" + week + course;
+            return roomReturn;
+        }
+    }
+}
+
+//判断单双周课程
+function coursesSwitch(weeks) {
+    //判断单双周
+    if (weeks % 2 == 0) {
+        //双周
+        //遍历课程classXX
+        for (var week = 1; week <= 7; week++) {
+            for (var course = 1; course <= 5; course++) {
+                //制作ID
+                var courseReturn = "#class" + week + course;
+                var roomReturn = "#room" + week + course;
+                //读取ID对应P标签的内容
+                var classText = $(courseReturn).text();
+                //判断是否有相反的"单周"内容
+                if (classText.indexOf("单") != -1) {
+                    $(courseReturn).html("&nbsp");
+                    $(roomReturn).html("&nbsp");
+                }
+            }
+        }
+    } else {
+        //单周
+        //遍历课程classXX
+        for (var week = 1; week <= 7; week++) {
+            for (var course = 1; course <= 5; course++) {
+                //制作ID
+                var courseReturn = "#class" + week + course;
+                var roomReturn = "#room" + week + course;
+                //读取ID对应P标签的内容
+                var classText = $(courseReturn).text();
+                //判断是否有相反的"双周"内容
+                if (classText.indexOf("双") != -1) {
+                    $(courseReturn).html("&nbsp");
+                    $(roomReturn).html("&nbsp");
+                }
             }
         }
     }
