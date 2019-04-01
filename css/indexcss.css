@@ -89,6 +89,7 @@ p#timeShow {
     height: 100%;
     text-align: right;
     margin:auto;
+    font-size:15px;
 }
 /*课表框架*/
 div#curriculum {

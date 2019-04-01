@@ -6,6 +6,11 @@ start = setTimeout(topTime, 500);//开始执行
 function topTime() {
     clearTimeout(start);//清除定时器
 
+    //读取课表xml
+    if (onlyRun == 0) {
+        ReadCurriculumXML();
+    }
+
     nowDate = new Date();
 
     var nowYear = nowDate.getYear() + 1900;
@@ -37,7 +42,7 @@ function topTime() {
     //输出信息
     document.getElementById("timeShow").innerHTML = "当前时间&nbsp" + nowYear + "年" + nowMonth + "月" + nowDay + "日" + Weekday[nowWeek] + "&nbsp" + nowHour + ":" + nowMinute + ":" + nowSecond + "&nbsp" + "本学期第" + weeks + "周";
 
-    //选择课表
+    //选择课表 判断夏冬季作息时间
     curriculumSwitch(nowDate);
 
     //单独执行一次
@@ -246,4 +251,42 @@ function classSwitchTime(weeks) {
             }
         }
     }
+}
+
+//读取课表XML
+function ReadCurriculumXML() {
+    $.ajax({
+        url: "https://160512.github.io/MyLoveWeb/XML/Curriculum.xml",
+        dataType: 'xml',
+        type: 'GET',
+        timeout: 2000,
+        error: function (xml) {
+            alert("加载XML文件出错！");
+        },
+        success: function (xml) {
+            $(xml).find("Week").each(function (i) {
+                /*
+                 * var oid = $(this).attr("id");
+                 * var lower = $(this).children("lower").text();
+                */
+                var weeks = $(this).attr("week");
+                var classNumber = $(this).children("class").attr("attr");
+                var startWeek = $(this).children("className").attr("startWeek");
+                var endWeek = $(this).children("className").attr("endWeek");
+                var OoT = $(this).children("className").attr("OoT");
+                var room = $(this).children("clclassNameass").attr("room");
+                var className = $(this).children("className").text();
+
+                alert(weeks);
+                alert(classNumber);
+                alert(startWeek);
+                alert(endWeek);
+                alert(OoT);
+                alert(room);
+                alert(className);
+
+                i++;
+            });
+        }
+    });
 }
