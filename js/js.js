@@ -270,12 +270,12 @@ function ReadCurriculumXML() {
                  * var lower = $(this).children("lower").text();
                 */
                 var weeks = $(this).attr("week");
-                var classNumber = $(this).children("class").attr("attr");
-                var startWeek = $(this).children("className").attr("startWeek");
-                var endWeek = $(this).children("className").attr("endWeek");
-                var OoT = $(this).children("className").attr("OoT");
-                var room = $(this).children("clclassNameass").attr("room");
-                var className = $(this).children("className").text();
+                var classNumber = $(this).children("class").attr("class");
+                var startWeek = $(this).children("class").attr("startWeek");
+                var endWeek = $(this).children("class").attr("endWeek");
+                var OoT = $(this).children("class").attr("OoT");
+                var room = $(this).children("class").attr("room");
+                var className = $(this).children("class").text();
 
                 alert(weeks);
                 alert(classNumber);
@@ -285,7 +285,6 @@ function ReadCurriculumXML() {
                 alert(room);
                 alert(className);
 
-                i++;
             });
         }
     });
