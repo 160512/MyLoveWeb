@@ -264,7 +264,7 @@ function ReadCurriculumXML() {
             alert("加载XML文件出错！");
         },
         success: function (xml) {
-            $(xml).find("Week").each(function (i) {
+            $(xml).find("week").each(function (i) {
                 /*
                  * var oid = $(this).attr("id");
                  * var lower = $(this).children("lower").text();
@@ -275,7 +275,7 @@ function ReadCurriculumXML() {
                 var endWeek = $(this).children("class").attr("endWeek");
                 var OoT = $(this).children("class").attr("OoT");
                 var room = $(this).children("class").attr("room");
-                var className = $(this).children("class").text();
+                var className = $(this).children("class").attr("className");
 
                 alert(weeks);
                 alert(classNumber);

@@ -2,59 +2,58 @@
 <root>
   <!--周一课程-->
   <Week week="1">
-    <class class="1" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
-    <class class="2" startWeek="2" endWeek="19" OoT="A" room="北阶104">毛概</class>
-    <class class="3" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
-    <class class="4" startWeek="2" endWeek="17" OoT="A" room="综209东">英语</class>
-    <class class="5" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
+    <class class="1" startWeek="0" endWeek="0" OoT="A" room="NULL" className="NULL">"></class>
+    <class class="2" startWeek="2" endWeek="19" OoT="A" room="北阶104" className="毛概">"></class>
+    <class class="3" startWeek="0" endWeek="0" OoT="A" room="NULL" className="NULL">">"></class>
+    <class class="4" startWeek="2" endWeek="17" OoT="A" room="综209东" className="英语">"></class>
+    <class class="5" startWeek="0" endWeek="0" OoT="A" room="NULL" className="NULL">"></class>
   </Week>
   <!--周二课程-->
   <Week week="2">
-    <class class="1" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
-    <class class="2" startWeek="2" endWeek="20" OoT="A" room="Z506">Pytho</class>
-    <class class="3" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
-    <class class="4" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
-    <class class="5" startWeek="4" endWeek="12" OoT="A" room="北阶104">选修食品</class>
+    <class class="1" startWeek="0" endWeek="0" OoT="A" room="NULL" className="NULL"></class>
+    <class class="2" startWeek="2" endWeek="20" OoT="A" room="Z506" className="Pytho"></class>
+    <class class="3" startWeek="0" endWeek="0" OoT="A" room="NULL" className="NULL"></class>
+    <class class="4" startWeek="0" endWeek="0" OoT="A" room="NULL" className="NULL"></class>
+    <class class="5" startWeek="4" endWeek="12" OoT="A" room="北阶104" className="选修食品"></class>
   </Week>
   <!--周三课程-->
   <Week week="3">
-    //周三
-    <class class="1" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
-    <class class="2" startWeek="2" endWeek="19" OoT="A" room="北阶104">毛概</class>
-    <class class="3" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
-    <class class="4" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
-    <class class="5" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
+    <class class="1" startWeek="0" endWeek="0" OoT="A" room="NULL" className="NULL"></class>
+    <class class="2" startWeek="2" endWeek="19" OoT="A" room="北阶104" className="毛概"></class>
+    <class class="3" startWeek="0" endWeek="0" OoT="A" room="NULL" className="NULL"></class>
+    <class class="4" startWeek="0" endWeek="0" OoT="A" room="NULL" className="NULL"></class>
+    <class class="5" startWeek="0" endWeek="0" OoT="A" room="NULL" className="NULL"></class>
   </Week>
   <!--周四课程-->
   <Week week="4">
-    <class class="1" startWeek="2" endWeek="15" OoT="A" room="Z304">计算机</class>
-    <class class="2" startWeek="2" endWeek="15" OoT="A" room="Z304">计算机</class>
-    <class class="3" startWeek="2" endWeek="17" OoT="A" room="操场">体育</class>
-    <class class="4" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
-    <class class="5" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
+    <class class="1" startWeek="2" endWeek="15" OoT="A" room="Z304" className="计算机"></class>
+    <class class="2" startWeek="2" endWeek="15" OoT="A" room="Z304" className="计算机"></class>
+    <class class="3" startWeek="2" endWeek="17" OoT="A" room="操场" className="体育"></class>
+    <class class="4" startWeek="0" endWeek="0" OoT="A" room="NULL" className="NULL"></class>
+    <class class="5" startWeek="0" endWeek="0" OoT="A" room="NULL" className="NULL"></class>
   </Week>
   <!--周五课程-->
   <Week week="5">
-    <class class="1" startWeek="2" endWeek="19" OoT="A" room="2506">数学</class>
-    <class class="2" startWeek="2" endWeek="17" OoT="A" room="2502">英语</class>
-    <class class="3" startWeek="2" endWeek="16" OoT="A" room="2506">创业</class>
-    <class class="4" startWeek="2" endWeek="20" OoT="A" room="Z506">Python</class>
-    <class class="5" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
+    <class class="1" startWeek="2" endWeek="19" OoT="A" room="2506" className="数学"></class>
+    <class class="2" startWeek="2" endWeek="17" OoT="A" room="2502" className="英语"></class>
+    <class class="3" startWeek="2" endWeek="16" OoT="A" room="2506" className="创业"></class>
+    <class class="4" startWeek="2" endWeek="20" OoT="A" room="Z506" className="Python"></class>
+    <class class="5" startWeek="0" endWeek="0" OoT="A" room="NULL" className="NULL"></class>
   </Week>
   <!--周六课程-->
   <Week week="6">
-    <class class="1" startWeek="2" endWeek="20" OoT="A" room="Z302">NULL</class>
-    <class class="2" startWeek="2" endWeek="20" OoT="O" room="NULL">NULL</class>
-    <class class="3" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
-    <class class="4" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
-    <class class="5" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
+    <class class="1" startWeek="2" endWeek="20" OoT="A" room="Z302" className="NULL"></class>
+    <class class="2" startWeek="2" endWeek="20" OoT="O" room="NULL" className="NULL"></class>
+    <class class="3" startWeek="0" endWeek="0" OoT="A" room="NULL" className="NULL"></class>
+    <class class="4" startWeek="0" endWeek="0" OoT="A" room="NULL" className="NULL"></class>
+    <class class="5" startWeek="0" endWeek="0" OoT="A" room="NULL" className="NULL"></class>
   </Week>
   <!--周日课程-->
   <Week week="7">
-    <class class="1" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
-    <class class="2" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
-    <class class="3" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
-    <class class="4" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
-    <class class="5" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
+    <class class="1" startWeek="0" endWeek="0" OoT="A" room="NULL" className="NULL"></class>
+    <class class="2" startWeek="0" endWeek="0" OoT="A" room="NULL" className="NULL"></class>
+    <class class="3" startWeek="0" endWeek="0" OoT="A" room="NULL" className="NULL"></class>
+    <class class="4" startWeek="0" endWeek="0" OoT="A" room="NULL" className="NULL"></class>
+    <class class="5" startWeek="0" endWeek="0" OoT="A" room="NULL" className="NULL"></class>
   </Week>
 </root>
