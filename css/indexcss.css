@@ -30,7 +30,7 @@ ul, ol {
 }
 
 th, td, input {
-    font-size: 12px;
+    font-size: 16px;
 }
 
 h3 {
@@ -102,23 +102,24 @@ table#curriculum {
     border-collapse: collapse;
     height: 100%;
     margin: 0 auto;
+    font-size:13px;
 }
-    /*表格边框*/
-    table#curriculum td {
-        border: 1px solid #0094ff;
-    }
-        /*表格宽度*/
-        table#curriculum td#Festivals {
-            width: 3%;
-        }
+/*表格边框*/
+table#curriculum td {
+    border: 1px solid #0094ff;
+}
+/*表格宽度*/
+table#curriculum td#Festivals {
+    width: 3%;
+}
 
-        table#curriculum td#time {
-            width: 13%;
-        }
+table#curriculum td#time {
+    width: 13%;
+}
 
-        table#curriculum td#Monday, td#Tuesday, td#Wednesday, td#Thursday, td#Friday, td#Saturday, td#Sunday {
-            width: 12%;
-        }
+table#curriculum td#Monday, td#Tuesday, td#Wednesday, td#Thursday, td#Friday, td#Saturday, td#Sunday {
+    width: 12%;
+}
 /*表格配色*/
 tr.header, tr.time, td.time {
     background-color: #FFFFCC;
@@ -128,6 +129,6 @@ td.class {
     background-color: #CCFFFF;
 }
 
-    td.class:hover {
-        background: #FFCCCC;
-    }
+td.class:hover {
+    background: #FFCCCC;
+}

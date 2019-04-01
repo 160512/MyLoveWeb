@@ -96,19 +96,19 @@ function curriculumSwitch(nowDate){
 
     //判断时间
     var nowClass = 0;
-    if (SchoolTime1st < nowTime && nowTime < BreakTime1st) {
+    if (SchoolTime1st <= nowTime && nowTime <= BreakTime1st) {
         nowClass = 1;
     }
-    if (SchoolTime2nd < nowTime && nowTime < BreakTime2nd) {
+    if (SchoolTime2nd <= nowTime && nowTime <= BreakTime2nd) {
         nowClass = 2;
     }
-    if (SchoolTime3rd < nowTime && nowTime < BreakTime3rd) {
+    if (SchoolTime3rd <= nowTime && nowTime <= BreakTime3rd) {
         nowClass = 3;
     }
-    if (SchoolTime4th < nowTime && nowTime < BreakTime4th) {
+    if (SchoolTime4th <= nowTime && nowTime <= BreakTime4th) {
         nowClass = 4;
     }
-    if (SchoolTime5th < nowTime && nowTime < BreakTime5th) {
+    if (SchoolTime5th <= nowTime && nowTime <= BreakTime5th) {
         nowClass = 5;
     }
     //判断星期

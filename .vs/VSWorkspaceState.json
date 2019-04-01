@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\css",
-    "\\js"
+    "\\js",
+    "\\XML"
   ],
-  "SelectedNode": "\\js\\js.js",
+  "SelectedNode": "\\XML\\Curriculum.xml",
   "PreviewInSolutionExplorer": false
 }
