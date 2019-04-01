@@ -264,18 +264,22 @@ function ReadCurriculumXML() {
             alert("加载XML文件出错！");
         },
         success: function (xml) {
-            $(xml).find("week").each(function (i) {
+            $(xml).find("Week").each(function (i) {
                 /*
                  * var oid = $(this).attr("id");
                  * var lower = $(this).children("lower").text();
+                 * var id = $(this).children("id");   //获取id节点
+                 *id_value = id.text();              //获取节点文本
+                 *email = $(this).attr("email");     //获取student下的email属性
                 */
                 var weeks = $(this).attr("week");
-                var classNumber = $(this).children("class").attr("class");
-                var startWeek = $(this).children("class").attr("startWeek");
-                var endWeek = $(this).children("class").attr("endWeek");
-                var OoT = $(this).children("class").attr("OoT");
-                var room = $(this).children("class").attr("room");
-                var className = $(this).children("class").attr("className");
+                var classTag = $(this).children("class");
+                var classNumber = classTag.attr("class");
+                var startWeek = classTag.attr("startWeek");
+                var endWeek = classTag.attr("endWeek");
+                var OoT = classTag.attr("OoT");
+                var room = classTag.attr("room");
+                var className = classTag.text();
 
                 alert(weeks);
                 alert(classNumber);
@@ -285,6 +289,7 @@ function ReadCurriculumXML() {
                 alert(room);
                 alert(className);
 
+                i++;
             });
         }
     });
