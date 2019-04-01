@@ -100,7 +100,7 @@ function curriculumSwitch(nowDate){
     //转换夏季作息时间
     //判断时间处于夏季作息时间
     var nowMonth = nowDate.getMonth() + 1;
-    if (nowMonth <= 5 && nowMonth < 10) {
+    if (nowMonth >= 5 && nowMonth < 10) {
         //设置夏季下午课程时间
         SchoolTime3rd.setHours(14, 40);
         BreakTime3rd.setHours(16, 20);
