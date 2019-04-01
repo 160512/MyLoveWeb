@@ -86,7 +86,6 @@ div#top {
 }
 /*时间框架*/
 p#timeShow {
-    width: 1100px;
     height: 100%;
     text-align: right;
     margin:auto;
