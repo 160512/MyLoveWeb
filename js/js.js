@@ -4,12 +4,13 @@ var start = null;
 start = setTimeout(topTime, 500);//开始执行
 //顶部时间
 function topTime() {
-    //clearTimeout(start);//清除定时器
+    clearTimeout(start);//清除定时器
 
-    //读取课表xml
+    /*/读取课表xml
     if (onlyRun == 0) {
         ReadCurriculumXML();
     }
+    */
 
     nowDate = new Date();
 
