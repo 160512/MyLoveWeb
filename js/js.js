@@ -8,34 +8,34 @@ function topTime() {
 
     nowDate = new Date();
 
-    var y = nowDate.getYear() + 1900;
-    var mm = nowDate.getMonth() + 1;
-    var d = nowDate.getDate();
-    var weekday = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+    var nowYear = nowDate.getYear() + 1900;
+    var nowMonth = nowDate.getMonth() + 1;
+    var nowDay = nowDate.getDate();
+    var Weekday = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
 
-    var day = nowDate.getDay();
-    var h = nowDate.getHours();
-    var m = nowDate.getMinutes();
-    var s = nowDate.getSeconds();
+    var nowWeek = nowDate.getDay();
+    var nowHour = nowDate.getHours();
+    var nowMinute = nowDate.getMinutes();
+    var nowSecond = nowDate.getSeconds();
 
-    if (h < 10) {
-        h = "0" + h;
+    if (nowHour < 10) {
+        nowHour = "0" + nowHour;
     }
-    if (m < 10) {
-        m = "0" + m;
+    if (nowMinute < 10) {
+        nowMinute = "0" + nowMinute;
     }
-    if (s < 10) {
-        s = "0" + s;
+    if (nowSecond < 10) {
+        nowSecond = "0" + nowSecond;
     }
     //计算周期
-    var sDate = new Date(2019, 2, 18);//学期起始时间
-    sDate.setMonth(sDate.getMonth() - 1);
-    var cDate = nowDate - sDate;
-    var cDay = Math.floor(cDate / (3600 * 24 * 1000));
+    var startDate = new Date(2019, 2, 18);//学期起始时间
+    startDate.setMonth(startDate.getMonth() - 1);
+    var differenceDate = nowDate - startDate;
+    var cDay = Math.floor(differenceDate / (3600 * 24 * 1000));
     var weeks = parseInt(cDay / 7) + 1;
 
     //输出信息
-    document.getElementById("timeShow").innerHTML = "当前时间&nbsp" + y + "年" + mm + "月" + d + "日" + weekday[day] + "&nbsp" + h + ":" + m + ":" + s + "&nbsp" + "本学期第" + weeks + "周";
+    document.getElementById("timeShow").innerHTML = "当前时间&nbsp" + nowYear + "年" + nowMonth + "月" + nowDay + "日" + Weekday[nowWeek] + "&nbsp" + nowHour + ":" + nowMinute + ":" + nowSecond + "&nbsp" + "本学期第" + weeks + "周";
 
     //选择课表
     curriculumSwitch(nowDate);
@@ -64,11 +64,13 @@ function curriculumSwitch(nowDate){
 
     //获取当前时间
     //.setHours(hour,min,sec,millisec)
+    //获取周次
     var day = nowDate.getDay();
+    //获取时间
     var nowTime = new Date();
     nowTime.setHours(nowDate.getHours(), nowDate.getMinutes());
 
-    //设置上课下课时间
+    //设置冬季作息时间
     var SchoolTime1st = new Date();
     var BreakTime1st = new Date();
     SchoolTime1st.setHours(7, 50);
@@ -93,6 +95,25 @@ function curriculumSwitch(nowDate){
     var BreakTime5th = new Date();
     SchoolTime5th.setHours(19, 0);
     BreakTime5th.setHours(20, 40);
+
+
+    //转换夏季作息时间
+    //判断时间处于夏季作息时间
+    var nowMonth = nowDate.getMonth() + 1;
+    if (nowMonth <= 5 && nowMonth < 10) {
+        //设置夏季下午课程时间
+        SchoolTime3rd.setHours(14, 40);
+        BreakTime3rd.setHours(16, 20);
+        SchoolTime4th.setHours(16, 30);
+        BreakTime4th.setHours(18, 10);
+        //修改表格作息时间
+        $('#APreparationTime').html('14:30');
+        $('#Time5th').html('14:40-15:25');
+        $('#Time6th').html('15:35-16:20');
+        $('#Time7th').html('16:30-17:15');
+        $('#Time8th').html('17:25-18:10');
+    }
+
 
     //判断时间
     var nowClass = 0;
