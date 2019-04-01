@@ -30,7 +30,7 @@ ul, ol {
 }
 
 th, td, input {
-    font-size: 16px;
+    font-size: 13px;
 }
 
 h3 {
@@ -86,7 +86,7 @@ div#top {
 }
 /*时间框架*/
 p#timeShow {
-    width: 900px;
+    width: 1100px;
     height: 100%;
     text-align: right;
     margin:auto;
@@ -107,6 +107,8 @@ table#curriculum {
 /*表格边框*/
 table#curriculum td {
     border: 1px solid #0094ff;
+    font-size: 16px;
+    /*text-shadow:-4px 4px 3px #999;*/
 }
 /*表格宽度*/
 table#curriculum td#Festivals {
@@ -114,11 +116,11 @@ table#curriculum td#Festivals {
 }
 
 table#curriculum td#time {
-    width: 13%;
+    width: 10.2%;
 }
 
 table#curriculum td#Monday, td#Tuesday, td#Wednesday, td#Thursday, td#Friday, td#Saturday, td#Sunday {
-    width: 12%;
+    width: 12.4%;
 }
 /*表格配色*/
 tr.header, tr.time, td.time {
