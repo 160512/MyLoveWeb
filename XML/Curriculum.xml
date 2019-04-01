@@ -11,7 +11,7 @@
   <!--周二课程-->
   <Week week="2">
 	<class class="1" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
-	<class class="2" startWeek="2" endWeek="20" OoT="A" room="Z506">Pytho</class>
+	<class class="2" startWeek="2" endWeek="20" OoT="A" room="Z506">Python</class>
 	<class class="3" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
 	<class class="4" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
 	<class class="5" startWeek="4" endWeek="12" OoT="A" room="北阶104">选修食品</class>
@@ -19,7 +19,7 @@
   <!--周三课程-->
   <Week week="3">
 <class class="1" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
-<class class="2" startWeek="2" endWeek="19" OoT="A" room="北阶104">毛概</class>
+<class class="2" startWeek="2" endWeek="19" OoT="A" room="2510">毛概</class>
 <class class="3" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
 <class class="4" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
 <class class="5" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
@@ -42,8 +42,8 @@
   </Week>
   <!--周六课程-->
   <Week week="6">
-<class class="1" startWeek="2" endWeek="20" OoT="A" room="Z302">NULL</class>
-<class class="2" startWeek="2" endWeek="20" OoT="O" room="NULL">NULL</class>
+<class class="1" startWeek="2" endWeek="20" OoT="A" room="Z302">数据库</class>
+<class class="2" startWeek="2" endWeek="20" OoT="O" room="Z302">数据库</class>
 <class class="3" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
 <class class="4" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
 <class class="5" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
