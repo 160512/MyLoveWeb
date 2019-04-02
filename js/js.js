@@ -1,16 +1,19 @@
 //启动设置
-var onlyRun = 0;
+var OnlyRun = 0;
 var start = null;
 start = setTimeout(topTime, 500);//开始执行
 //顶部时间
 function topTime() {
     clearTimeout(start);//清除定时器
 
-    //读取课表xml
-    if (onlyRun == 0) {
+    if (OnlyRun == 0) {
+        //格式化课表
+        curriculumFormat();
+        //读取课表XML显示课表
         ReadCurriculumXML();
+
+        OnlyRun++; 
     }
-    
 
     nowDate = new Date();
 
@@ -42,27 +45,164 @@ function topTime() {
 
     //输出信息
     document.getElementById("timeShow").innerHTML = "当前时间&nbsp" + nowYear + "年" + nowMonth + "月" + nowDay + "日" + Weekday[nowWeek] + "&nbsp" + nowHour + ":" + nowMinute + ":" + nowSecond + "&nbsp" + "本学期第" + weeks + "周";
+   
+     //判断单双周
+     coursesSwitch(weeks);
+     //判断课程时间是否在周次内
+     classSwitchTime(weeks);
+     //选择课表 判断夏冬季作息时间
+     curriculumSwitch(nowDate);
 
-    //选择课表 判断夏冬季作息时间
-    curriculumSwitch(nowDate);
-
-    //单独执行一次
-    if (onlyRun == 0) {
-        //格式化课表
-        curriculumFormat();
-        //判断单双周
-        coursesSwitch(weeks);
-        //判断课程时间是否在周次内
-        classSwitchTime(weeks);
-
-        onlyRun = 1;
-    }
     //设定定时器，循环执行
     start = setTimeout(topTime, 500);
 }
 
+
+//格式化表格
+function curriculumFormat() {
+    //选择课程教室并清空显示
+    for (var week = 1; week <= 7; week++) {
+        for (var course = 1; course <= 5; course++) {
+            var classTag = "#class" + week + course;
+            var roomTag = "#room" + week + course;
+            //var classText = document.getElementById(classReturn);
+            $(classTag).css("display", "none");
+            $(roomTag).css("display", "none");
+        }
+    }
+}
+
+//读取课表XML
+function ReadCurriculumXML() {
+    $.ajax({
+        url: "https://160512.github.io/MyLoveWeb/XML/Curriculum.xml",
+        dataType: 'xml',
+        type: 'GET',
+        timeout: 2000,
+        error: function (xml) {
+            alert("!!!加载XML文件出错!!!联系老公！！！");
+        },
+        success: function (xml) {
+            //console.log();
+
+            $(xml).find("Week").each(function (i) {//查找所有Week节点并遍历
+                var weekNumber = $(this).attr("week");//获取周次
+                $(this).find("class").each(function (j) {//查找当前周次所有class节点并遍历
+
+                    //var class_id = $(this).children("class");//获得子节点
+                    var classNumber = $(this).attr("class");//获取节次
+                    var startWeekNumber = $(this).attr("startWeek");//获取开始周次
+                    var endWeekNumber = $(this).attr("endWeek");//获取结束周次
+                    var OoTSwitch = $(this).attr("OoT");//获取单双周或者全周
+                    var room = $(this).attr("room");//获取教室
+                    var className = $(this).text();//获取课程
+
+                    //获取修改单双周
+                    switch (OoTSwitch) {
+                        case 'O':
+                            var OoTText = "单周";
+                            break;
+                        case 'T':
+                            var OoTText = "双周";
+                            break;
+                        case 'A':
+                            var OoTText = "周";
+                            break;
+                        case 'L':
+                            var OoTText = "临时";
+                            break;
+                    }
+
+                    //制作标签
+                    var classTag = "#class" + weekNumber + classNumber;
+                    var roomTag = "#room" + weekNumber + classNumber;
+
+                    //判断是否有课程
+                    if (className == "NULL") {//没有课程
+                        $(classTag).text(className);
+                        $(roomTag).text(room);
+                    } else {//有课程
+                        //e.g
+                        //<p id="class25">选修食品<span class="startweek">4</span>-<span class="endweek">12</span>周<p id="room25">@北阶104</td>
+                        $(classTag).html(className + "<span class=\"startweek\">" + startWeekNumber + "</span>-<span class=\"endweek\">" + endWeekNumber + "</span>" + OoTText);
+                        $(roomTag).text("@" + room);
+
+                        //显示列表
+                        $(classTag).css("display", "block");
+                        $(roomTag).css("display", "block");
+                    }
+                });
+            });
+        }
+    });
+}
+
+//判断单双周课程
+function coursesSwitch(weeks) {
+    //判断单双周
+    if (weeks % 2 == 0) {
+        //双周
+        //遍历课程classXX
+        for (var week = 1; week <= 7; week++) {
+            for (var course = 1; course <= 5; course++) {
+                //制作ID
+                var ClassTag = "#class" + week + course;
+                var roomTag = "#room" + week + course;
+                //读取ID对应P标签的内容
+                var classText = $(ClassTag).text();
+                //判断是否有相反的"单周"内容
+                if (classText.indexOf("单") != -1) {
+                    $(ClassTag).css("display","none");
+                    $(roomTag).css("display", "none");
+                }
+            }
+        }
+    } else {
+        //单周
+        //遍历课程classXX
+        for (var week = 1; week <= 7; week++) {
+            for (var course = 1; course <= 5; course++) {
+                //制作ID
+                var ClassTag = "#class" + week + course;
+                var roomTag = "#room" + week + course;
+                //读取ID对应P标签的内容
+                var classText = $(ClassTag).text();
+                //判断是否有相反的"双周"内容
+                if (classText.indexOf("双") != -1) {
+                    $(ClassTag).css("display", "none");
+                    $(roomTag).css("display", "none");
+                }
+            }
+        }
+    }
+}
+
+//判断课程时间是否在周次内
+function classSwitchTime(weeks) {
+    //遍历课程classXX
+    for (var week = 1; week <= 7; week++) {
+        for (var course = 1; course <= 5; course++) {
+            //制作ID
+            var ClassTag = "#class" + week + course;
+            var roomTag = "#room" + week + course;
+            //读取ID对应span.startweek标签的内容
+            var s = $(ClassTag).text();
+            var startWeek = $(ClassTag).children(".startweek").text();
+            var endWeek = $(ClassTag).children(".endweek").text();
+            if (s != "NULL") {
+                if (startWeek <= weeks && weeks <= endWeek) {
+
+                } else {
+                    $(ClassTag).css("display", "none");
+                    $(roomTag).css("display", "none");
+                }
+            }
+        }
+    }
+}
+
 //选择课表
-function curriculumSwitch(nowDate){
+function curriculumSwitch(nowDate) {
     /*
         选择父系Css
         $('#room11').parent('.class').css("backgroundColor","#FFCCCC");
@@ -166,139 +306,5 @@ function curriculumSwitch(nowDate){
 
     var nowroom = "#class" + nowWeek + nowClass;
     $(nowroom).parent('.class').css("backgroundColor", "#FFCCCC");
-}
-
-//修改课表清空格式化NULL内容
-function curriculumFormat() {
-    //选择课程教室
-    for (var week = 1; week <= 7; week++) {
-        for (var course = 1; course <= 5; course++) {
-            var classReturn = "#class" + week + course;
-            var roomReturn = "#room" + week + course;
-            //判断是非为NULL
-            //var classText = document.getElementById(classReturn);
-            var classText = $(classReturn).text();
-            if (classText == "NULL") {
-                $(classReturn).css("display", "none");
-            }
-            //var roomText = document.getElementById(roomReturn);
-            var roomText = $(roomReturn).text();
-            if (roomText == "NULL") {
-                $(roomReturn).css("display", "none");
-            }
-        }
-    }
-}
-
-//判断单双周课程
-function coursesSwitch(weeks) {
-    //判断单双周
-    if (weeks % 2 == 0) {
-        //双周
-        //遍历课程classXX
-        for (var week = 1; week <= 7; week++) {
-            for (var course = 1; course <= 5; course++) {
-                //制作ID
-                var courseReturn = "#class" + week + course;
-                var roomReturn = "#room" + week + course;
-                //读取ID对应P标签的内容
-                var classText = $(courseReturn).text();
-                //判断是否有相反的"单周"内容
-                if (classText.indexOf("单") != -1) {
-                    $(courseReturn).css("display","none");
-                    $(roomReturn).css("display", "none");
-                }
-            }
-        }
-    } else {
-        //单周
-        //遍历课程classXX
-        for (var week = 1; week <= 7; week++) {
-            for (var course = 1; course <= 5; course++) {
-                //制作ID
-                var courseReturn = "#class" + week + course;
-                var roomReturn = "#room" + week + course;
-                //读取ID对应P标签的内容
-                var classText = $(courseReturn).text();
-                //判断是否有相反的"双周"内容
-                if (classText.indexOf("双") != -1) {
-                    $(courseReturn).css("display", "none");
-                    $(roomReturn).css("display", "none");
-                }
-            }
-        }
-    }
-}
-
-//判断课程时间是否在周次内
-function classSwitchTime(weeks) {
-    //遍历课程classXX
-    for (var week = 1; week <= 7; week++) {
-        for (var course = 1; course <= 5; course++) {
-            //制作ID
-            var courseReturn = "#class" + week + course;
-            var roomReturn = "#room" + week + course;
-            //读取ID对应span.startweek标签的内容
-            var s = $(courseReturn).text();
-            var startWeek = $(courseReturn).children(".startweek").text();
-            var endWeek = $(courseReturn).children(".endweek").text();
-            if (s != "NULL") {
-                if (startWeek <= weeks && weeks <= endWeek) {
-
-                } else {
-                    $(courseReturn).css("display", "none");
-                    $(roomReturn).css("display", "none");
-                }
-            }
-        }
-    }
-}
-
-//读取课表XML
-function ReadCurriculumXML() {
-    $.ajax({
-        url: "https://160512.github.io/MyLoveWeb/XML/Curriculum.xml",
-        dataType: 'xml',
-        type: 'GET',
-        timeout: 2000,
-        error: function (xml) {
-            alert("!!!加载XML文件出错!!!联系老公！！！");
-        },
-        success: function (xml) {
-            //console.log();
-
-            $(xml).find("Week").each(function (i) {//查找所有Week节点并遍历
-                var weekNumber = $(this).attr("week");//获取周次
-                $(xml).find("class").each(function (j) {//查找所有class节点并遍历
-
-                    //var class_id = $(this).children("class");//获得子节点
-                    var classNumber = $(this).attr("class");//获取节次
-                    var startWeekNumber = $(this).attr("startWeek");//获取开始周次
-                    var endWeekNumber = $(this).attr("endWeek");//获取结束周次
-                    var OoTSwitch = $(this).attr("OoT");//获取单双周或者全周
-                    var room = $(this).attr("room");//获取教室
-                    var className = $(this).text();//获取课程
-
-                    //获取修改单双周
-                    switch (OoTSwitch) {
-                        case 'O':
-                            var OoTText = "单周";
-                            break;
-                        case 'T':
-                            var OoTText = "双周";
-                            break;
-                        case 'A':
-                            var OoTText = "周";
-                            break;
-                        case 'L':
-                            var OoTText = "临时";
-                            break;
-                    }
-
-                    console.log("第" + weekNumber + "周，第" + classNumber + "节" + startWeekNumber + "-" + endWeekNumber + OoTText + "在" + room + "上" + className);
-                });
-            });
-        }
-    });
 }
 
