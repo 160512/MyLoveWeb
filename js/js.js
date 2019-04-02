@@ -6,11 +6,11 @@ start = setTimeout(topTime, 500);//开始执行
 function topTime() {
     clearTimeout(start);//清除定时器
 
-    /*/读取课表xml
+    //读取课表xml
     if (onlyRun == 0) {
         ReadCurriculumXML();
     }
-    */
+    
 
     nowDate = new Date();
 
@@ -253,7 +253,7 @@ function classSwitchTime(weeks) {
         }
     }
 }
-/*
+
 //读取课表XML
 function ReadCurriculumXML() {
     $.ajax({
@@ -262,41 +262,43 @@ function ReadCurriculumXML() {
         type: 'GET',
         timeout: 2000,
         error: function (xml) {
-            alert("加载XML文件出错！");
+            alert("!!!加载XML文件出错!!!联系老公！！！");
         },
         success: function (xml) {
-            $(xml).find("Week").each( 
-                function () {
-                
-                 * var oid = $(this).attr("id");
-                 * var lower = $(this).children("lower").text();
-                 * var id = $(this).children("id");   //获取id节点
-                 *id_value = id.text();              //获取节点文本
-                 *email = $(this).attr("email");     //获取student下的email属性
-                
-                var weeks = $(this).attr("week");
-                    $(xml).find("class").each(
-                        function () {
-                         
-                            var classNumber = $(this).attr("class");
-                            var startWeek = $(this).attr("startWeek");
-                            var endWeek = $(this).attr("endWeek");
-                            var OoT = $(this).attr("OoT");
-                            var room = $(this).attr("room");
-                            var className = $(this).text();
+            //console.log();
 
-                            alert(weeks);
-                            alert(classNumber);
-                            alert(startWeek);
-                            alert(endWeek);
-                            alert(OoT);
-                            alert(room);
-                            alert(className);
-                        });
+            $(xml).find("Week").each(function (i) {//查找所有Week节点并遍历
+                var weekNumber = $(this).attr("week");//获取周次
+                $(xml).find("class").each(function (j) {//查找所有class节点并遍历
 
+                    //var class_id = $(this).children("class");//获得子节点
+                    var classNumber = $(this).attr("class");//获取节次
+                    var startWeekNumber = $(this).attr("startWeek");//获取开始周次
+                    var endWeekNumber = $(this).attr("endWeek");//获取结束周次
+                    var OoTSwitch = $(this).attr("OoT");//获取单双周或者全周
+                    var room = $(this).attr("room");//获取教室
+                    var className = $(this).text();//获取课程
+
+                    //获取修改单双周
+                    switch (OoTSwitch) {
+                        case 'O':
+                            var OoTText = "单周";
+                            break;
+                        case 'T':
+                            var OoTText = "双周";
+                            break;
+                        case 'A':
+                            var OoTText = "周";
+                            break;
+                        case 'L':
+                            var OoTText = "临时";
+                            break;
+                    }
+
+                    console.log("第" + weekNumber + "周，第" + classNumber + "节" + startWeekNumber + "-" + endWeekNumber + OoTText + "在" + room + "上" + className);
                 });
+            });
         }
     });
 }
 
-*/
