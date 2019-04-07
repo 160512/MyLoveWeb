@@ -1,16 +1,16 @@
 //启动设置
 var OnlyRun = 0;
 var start = null;
-start = setTimeout(topTime, 500);//开始执行
-//顶部时间
-function topTime() {
+start = setTimeout(setTopTime, 500);//开始执行
+//设置顶部时间
+function setTopTime() {
     clearTimeout(start);//清除定时器
 
     if (OnlyRun == 0) {
         //格式化课表
-        curriculumFormat();
+        setCurriculumFormat();
         //读取课表XML显示课表
-        ReadCurriculumXML();
+        loadCurriculumXML();
 
         OnlyRun++; 
     }
@@ -54,12 +54,12 @@ function topTime() {
      curriculumSwitch(nowDate);
 
     //设定定时器，循环执行
-    start = setTimeout(topTime, 500);
+    start = setTimeout(setTopTime, 500);
 }
 
 
 //格式化表格
-function curriculumFormat() {
+function setCurriculumFormat() {
     //选择课程教室并清空显示
     for (var week = 1; week <= 7; week++) {
         for (var course = 1; course <= 5; course++) {
@@ -73,7 +73,7 @@ function curriculumFormat() {
 }
 
 //读取课表XML
-function ReadCurriculumXML() {
+function loadCurriculumXML() {
     $.ajax({
         url: "https://160512.github.io/MyLoveWeb/XML/Curriculum.xml",
         dataType: 'xml',
@@ -88,42 +88,78 @@ function ReadCurriculumXML() {
             $(xml).find("Week").each(function (i) {//查找所有Week节点并遍历
                 var weekNumber = $(this).attr("week");//获取周次
                 $(this).find("class").each(function (j) {//查找当前周次所有class节点并遍历
+                    if (weekNumber != "temp") {
+                        //var class_id = $(this).children("class");//获得子节点
+                        var classNumber = $(this).attr("class");//获取节次
+                        var startWeekNumber = $(this).attr("startWeek");//获取开始周次
+                        var endWeekNumber = $(this).attr("endWeek");//获取结束周次
+                        var OoTSwitch = $(this).attr("OoT");//获取单双周或者全周
+                        var room = $(this).attr("room");//获取教室
+                        var className = $(this).text();//获取课程
 
-                    //var class_id = $(this).children("class");//获得子节点
-                    var classNumber = $(this).attr("class");//获取节次
-                    var startWeekNumber = $(this).attr("startWeek");//获取开始周次
-                    var endWeekNumber = $(this).attr("endWeek");//获取结束周次
-                    var OoTSwitch = $(this).attr("OoT");//获取单双周或者全周
-                    var room = $(this).attr("room");//获取教室
-                    var className = $(this).text();//获取课程
+                        //获取修改单双周
+                        switch (OoTSwitch) {
+                            case 'O':
+                                var OoTText = "单周";
+                                break;
+                            case 'T':
+                                var OoTText = "双周";
+                                break;
+                            case 'A':
+                                var OoTText = "周";
+                                break;
+                            case 'L':
+                                var OoTText = "临时";
+                                break;
+                        }
 
-                    //获取修改单双周
-                    switch (OoTSwitch) {
-                        case 'O':
-                            var OoTText = "单周";
-                            break;
-                        case 'T':
-                            var OoTText = "双周";
-                            break;
-                        case 'A':
-                            var OoTText = "周";
-                            break;
-                        case 'L':
-                            var OoTText = "临时";
-                            break;
-                    }
+                        //制作标签
+                        var classTag = "#class" + weekNumber + classNumber;
+                        var roomTag = "#room" + weekNumber + classNumber;
 
-                    //制作标签
-                    var classTag = "#class" + weekNumber + classNumber;
-                    var roomTag = "#room" + weekNumber + classNumber;
+                        //判断是否有课程
+                        if (className == "NULL") {//没有课程
+                            $(classTag).text(className);
+                            $(roomTag).text(room);
+                        } else {//有课程
+                            //e.g
+                            //<p id="class25">选修食品<span class="startweek">4</span>-<span class="endweek">12</span>周<p id="room25">@北阶104</td>
+                            $(classTag).html(className + "<span class=\"startweek\">" + startWeekNumber + "</span>-<span class=\"endweek\">" + endWeekNumber + "</span>" + OoTText);
+                            $(roomTag).text("@" + room);
 
-                    //判断是否有课程
-                    if (className == "NULL") {//没有课程
-                        $(classTag).text(className);
-                        $(roomTag).text(room);
-                    } else {//有课程
-                        //e.g
-                        //<p id="class25">选修食品<span class="startweek">4</span>-<span class="endweek">12</span>周<p id="room25">@北阶104</td>
+                            //显示列表
+                            $(classTag).css("display", "block");
+                            $(roomTag).css("display", "block");
+                        }
+                    } else {
+                        var weekNumber = $(this).attr("weeks");//获取临时课程周次
+                        var classNumber = $(this).attr("class");//获取节次
+                        var startWeekNumber = $(this).attr("startWeek");//获取开始周次
+                        var endWeekNumber = $(this).attr("endWeek");//获取结束周次
+                        var OoTSwitch = $(this).attr("OoT");//获取单双周或者全周
+                        var room = $(this).attr("room");//获取教室
+                        var className = $(this).text();//获取课程
+
+                        //获取修改单双周
+                        switch (OoTSwitch) {
+                            case 'O':
+                                var OoTText = "单周";
+                                break;
+                            case 'T':
+                                var OoTText = "双周";
+                                break;
+                            case 'A':
+                                var OoTText = "周";
+                                break;
+                            case 'L':
+                                var OoTText = "临时";
+                                break;
+                        }
+
+                        //制作标签
+                        var classTag = "#class" + weekNumber + classNumber;
+                        var roomTag = "#room" + weekNumber + classNumber;
+
                         $(classTag).html(className + "<span class=\"startweek\">" + startWeekNumber + "</span>-<span class=\"endweek\">" + endWeekNumber + "</span>" + OoTText);
                         $(roomTag).text("@" + room);
 
@@ -304,7 +340,17 @@ function curriculumSwitch(nowDate) {
             break;
     }
 
-    var nowroom = "#class" + nowWeek + nowClass;
-    $(nowroom).parent('.class').css("backgroundColor", "#FFCCCC");
+    //获取下一节课
+    var nextClass = nowClass + 1;
+    //制作ID标签
+    var nowclassTag = "#class" + nowWeek + nowClass;
+    var nextclassTag = "#class" + nowWeek + nextClass;
+
+    //修改当前课程背景颜色
+    $(nowclassTag).parent('.class').css("backgroundColor", "#99CCCC");
+    //修改下一节课课程背景颜色
+    if (nextClass <= 5) {
+        $(nextclassTag).parent('.class').css("backgroundColor", "#FFCCCC");
+    }
 }
 

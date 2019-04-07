@@ -92,7 +92,7 @@ p#timeShow {
     font-size:15px;
 }
 /*课表框架*/
-div#curriculum {
+div#curriculum_div {
     height: 300px;
     width: 100%;
 }
@@ -133,4 +133,19 @@ td.class {
 
 td.class:hover {
     background: #FFCCCC;
+}
+
+/*日历框架*/
+div#calendar_div {
+    height: 300px;
+    width: 100%;
+    margin-top: -300px;
+}
+/*日历表格*/
+table#calendar {
+    text-align: center;
+    border-collapse: collapse;
+    height: 100%;
+    margin: 0 auto;
+    font-size: 13px;
 }
