@@ -264,19 +264,39 @@ function curriculumSwitch(nowDate) {
 
     //判断时间
     var nowClass = 0;
-    if (SchoolTime1st <= nowTime && nowTime <= BreakTime1st) {
+    var nextClass = 0;
+    if (nowTime < SchoolTime1st) {//第一节课上课前
+        nextClass = 1;
+    }
+    if (SchoolTime1st <= nowTime && nowTime <= BreakTime1st) {//第一节课上课上课中
         nowClass = 1;
+        nextClass = 2;
     }
-    if (SchoolTime2nd <= nowTime && nowTime <= BreakTime2nd) {
+    if (BreakTime1st < nowTime && nowTime < SchoolTime1st) {//第一节课下课后第二节课上课前
+        nextClass = 2;
+    }
+    if (SchoolTime2nd <= nowTime && nowTime <= BreakTime2nd) {//第二节课上课中
         nowClass = 2;
+        nextClass = 3;
     }
-    if (SchoolTime3rd <= nowTime && nowTime <= BreakTime3rd) {
+    if (BreakTime2nd < nowTime && nowTime < SchoolTime3rd) {//第二节课下课后第三节课上课前
+        nextClass = 3;
+    }
+    if (SchoolTime3rd <= nowTime && nowTime <= BreakTime3rd) {//第三节课上课中
         nowClass = 3;
+        nextClass = 4;
     }
-    if (SchoolTime4th <= nowTime && nowTime <= BreakTime4th) {
+    if (BreakTime3rd < nowTime && nowTime < SchoolTime4th) {//第三节课下课后第四节课上课前
+        nextClass = 4;
+    }
+    if (SchoolTime4th <= nowTime && nowTime <= BreakTime4th) {//第四节课上课中
         nowClass = 4;
+        nextClass = 5;
     }
-    if (SchoolTime5th <= nowTime && nowTime <= BreakTime5th) {
+    if (BreakTime4th < nowTime && nowTime < SchoolTime5th) {//第四节课下课后第五节课上课前
+        nextClass = 5;
+    }
+    if (SchoolTime5th <= nowTime && nowTime <= BreakTime5th) {//第五节课上课中
         nowClass = 5;
     }
     //判断星期
@@ -305,8 +325,6 @@ function curriculumSwitch(nowDate) {
             break;
     }
 
-    //获取下一节课
-    var nextClass = nowClass + 1;
     //制作ID标签
     var nowclassTag = "#class" + nowWeek + nowClass;
     var nextclassTag = "#class" + nowWeek + nextClass;

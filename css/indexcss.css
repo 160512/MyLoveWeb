@@ -145,7 +145,14 @@ div#calendar_div {
 table#calendar {
     text-align: center;
     border-collapse: collapse;
-    height: 100%;
+    height: 253px;
     margin: 0 auto;
     font-size: 13px;
+}
+table#calendar tr#FirstWeek, tr#SecondWeek, tr#ThirdWeek, tr#FourthWeek, tr#FifthWeek {
+    width: 12.4%;
+    height: 46px;
+}
+table#calendar tr#BannerWeek{
+    height: 23px;
 }
