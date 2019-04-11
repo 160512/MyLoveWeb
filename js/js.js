@@ -145,6 +145,17 @@ function loadCurriculumXML() {
                         $(roomTag).css("display", "block");
                     }
 
+                    //临时课程
+                    if (OoTSwitch == "L") {
+                        var weeks = $(this).attr("weeks");
+                        var classTag = "#class" + weeks + classNumber;
+                        var roomTag = "#room" + weeks + classNumber;
+
+                        $(classTag).html(className + "<span class=\"startweek\">" + startWeekNumber + "</span>-<span class=\"endweek\">" + endWeekNumber + "</span>" + OoTText);
+                        $(roomTag).text("@" + room);
+
+                    }
+
                 });
             });
         }
