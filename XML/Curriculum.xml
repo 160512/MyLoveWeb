@@ -57,6 +57,6 @@
 	<class class="5" startWeek="0" endWeek="0" OoT="A" room="NULL">NULL</class>
   </Week>
   <week week="8">
-  <class weeks="3" class="3" startweek="7" endweek="7" OoT="L" room="Z506">Python</class> 
+  <class weeks="1" class="1" startweek="7" endweek="9" OoT="L" room="Z506">Python</class> 
   </week>
 </root>
