@@ -134,25 +134,3 @@ td.class {
 td.class:hover {
     background: #FFCCCC;
 }
-
-/*日历框架*/
-div#calendar_div {
-    height: 300px;
-    width: 100%;
-    margin-top: -300px;
-}
-/*日历表格*/
-table#calendar {
-    text-align: center;
-    border-collapse: collapse;
-    height: 253px;
-    margin: 0 auto;
-    font-size: 13px;
-}
-table#calendar tr#FirstWeek, tr#SecondWeek, tr#ThirdWeek, tr#FourthWeek, tr#FifthWeek {
-    width: 12.4%;
-    height: 46px;
-}
-table#calendar tr#BannerWeek{
-    height: 23px;
-}

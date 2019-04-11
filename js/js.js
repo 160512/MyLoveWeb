@@ -1,22 +1,39 @@
 //启动设置
 var OnlyRun = 0;
 var start = null;
-start = setTimeout(setTopTime, 500);//开始执行
-//设置顶部时间
-function setTopTime() {
+start = setTimeout(cyclicalFun, 500);//开始执行
+//循环函数
+function cyclicalFun() {
     clearTimeout(start);//清除定时器
 
+    nowDate = new Date();
+    //设置顶部时间
+    setTopTime(nowDate);
+
+    //只执行一次
     if (OnlyRun == 0) {
         //格式化课表
         setCurriculumFormat();
         //读取课表XML显示课表
         loadCurriculumXML();
 
-        OnlyRun++; 
+        OnlyRun++;
     }
 
-    nowDate = new Date();
 
+    //判断单双周
+    coursesSwitch(getWeeks(nowDate));
+    //判断课程时间是否在周次内
+    classSwitchTime(getWeeks(nowDate));
+    //选择课表 判断夏冬季作息时间
+    curriculumSwitch(nowDate);
+
+    //设定定时器，循环执行
+    start = setTimeout(cyclicalFun, 500);
+}
+
+//设置顶部时间
+function setTopTime(nowDate) {
     var nowYear = nowDate.getYear() + 1900;
     var nowMonth = nowDate.getMonth() + 1;
     var nowDay = nowDate.getDate();
@@ -36,25 +53,21 @@ function setTopTime() {
     if (nowSecond < 10) {
         nowSecond = "0" + nowSecond;
     }
-    //计算周期
+
+    var weeks = getWeeks(nowDate);
+
+    //输出信息
+    document.getElementById("timeShow").innerHTML = "当前时间&nbsp" + nowYear + "年" + nowMonth + "月" + nowDay + "日" + Weekday[nowWeek] + "&nbsp" + nowHour + ":" + nowMinute + ":" + nowSecond + "&nbsp" + "本学期第" + weeks + "周";
+}
+
+//获取周次
+function getWeeks(nowDate) {
     var startDate = new Date(2019, 2, 18);//学期起始时间
     startDate.setMonth(startDate.getMonth() - 1);
     var differenceDate = nowDate - startDate;
     var cDay = Math.floor(differenceDate / (3600 * 24 * 1000));
     var weeks = parseInt(cDay / 7) + 1;
-
-    //输出信息
-    document.getElementById("timeShow").innerHTML = "当前时间&nbsp" + nowYear + "年" + nowMonth + "月" + nowDay + "日" + Weekday[nowWeek] + "&nbsp" + nowHour + ":" + nowMinute + ":" + nowSecond + "&nbsp" + "本学期第" + weeks + "周";
-   
-     //判断单双周
-     coursesSwitch(weeks);
-     //判断课程时间是否在周次内
-     classSwitchTime(weeks);
-     //选择课表 判断夏冬季作息时间
-     curriculumSwitch(nowDate);
-
-    //设定定时器，循环执行
-    start = setTimeout(setTopTime, 500);
+    return weeks;
 }
 
 
@@ -272,7 +285,7 @@ function curriculumSwitch(nowDate) {
         nowClass = 1;
         nextClass = 2;
     }
-    if (BreakTime1st < nowTime && nowTime < SchoolTime1st) {//第一节课下课后第二节课上课前
+    if (BreakTime1st < nowTime && nowTime < SchoolTime2nd) {//第一节课下课后第二节课上课前
         nextClass = 2;
     }
     if (SchoolTime2nd <= nowTime && nowTime <= BreakTime2nd) {//第二节课上课中
@@ -330,10 +343,9 @@ function curriculumSwitch(nowDate) {
     var nextclassTag = "#class" + nowWeek + nextClass;
 
     //修改当前课程背景颜色
-    $(nowclassTag).parent('.class').css("backgroundColor", "#99CCCC");
+    $(nowclassTag).parent('.class').css("backgroundColor", "#CCFF99");
     //修改下一节课课程背景颜色
     if (nextClass <= 5) {
         $(nextclassTag).parent('.class').css("backgroundColor", "#FFCCCC");
     }
 }
-
