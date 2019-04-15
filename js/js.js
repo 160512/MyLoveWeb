@@ -1,148 +1,144 @@
-//启动设置
-var OnlyRun = 0;
-var start = null;
-start = setTimeout(cyclicalFun, 500);//开始执行
-//循环函数
-function cyclicalFun() {
-    clearTimeout(start);//清除定时器
+var OnlyRun = true;//单次循环
+var fnCyclical = setTimeout(cyclicalFunction, 500);//设定定时器，开始执行
 
-    nowDate = new Date();
-    //设置顶部时间
-    setTopTime(nowDate);
+function cyclicalFunction() {//循环函数
+    clearTimeout(fnCyclical);//清除定时器
 
-    //只执行一次
-    if (OnlyRun == 0) {
-        //格式化课表
-        setCurriculumFormat();
-        //读取课表XML显示课表
-        loadCurriculumXML();
+    oNowDate = new Date();//获取当前时间
+    setTopTime(oNowDate);//设置顶部时间
 
-        OnlyRun++;
+    if (OnlyRun == true) {//只执行一次判断
+        setCurriculumFormat();//格式化课表
+        loadCurriculumXML();//读取课表XML显示课表
+
+        
+
+        OnlyRun = false;//改变控制变量
     }
 
+    setCoursesOoT(getWeeks(oNowDate));//判断单双周
+    setCourseWithinWeek(getWeeks(oNowDate));//判断课程时间是否在周次内
+    setNowLesson(oNowDate);//选择课表 判断夏冬季作息时间
 
-    //判断单双周
-    coursesSwitch(getWeeks(nowDate));
-    //判断课程时间是否在周次内
-    classSwitchTime(getWeeks(nowDate));
-    //选择课表 判断夏冬季作息时间
-    curriculumSwitch(nowDate);
-
-    //设定定时器，循环执行
-    start = setTimeout(cyclicalFun, 500);
+    fnCyclical = setTimeout(cyclicalFunction, 500);//设定定时器，循环执行
 }
 
 //设置顶部时间
-function setTopTime(nowDate) {
-    var nowYear = nowDate.getYear() + 1900;
-    var nowMonth = nowDate.getMonth() + 1;
-    var nowDay = nowDate.getDate();
-    var Weekday = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+function setTopTime(oNowDate) {
+    var iNowYear = oNowDate.getYear() + 1900;//获取年份
+    var iNowMonth = oNowDate.getMonth() + 1;//获取月份
+    var iNowDay = oNowDate.getDate();//获取日期
 
-    var nowWeek = nowDate.getDay();
-    var nowHour = nowDate.getHours();
-    var nowMinute = nowDate.getMinutes();
-    var nowSecond = nowDate.getSeconds();
+    var aWeekday = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];//创建星期数组
+    var iNowWeek = oNowDate.getDay();//获取星期数
 
-    if (nowHour < 10) {
-        nowHour = "0" + nowHour;
+    var iNowHour = oNowDate.getHours();//获取小时
+    var iNowMinute = oNowDate.getMinutes();//获取分钟
+    var iNowSecond = oNowDate.getSeconds();//获取秒
+
+    if (iNowHour < 10) {//判断小时是否小于10
+        iNowHour = '0' + iNowHour;//加上字符0
     }
-    if (nowMinute < 10) {
-        nowMinute = "0" + nowMinute;
+    if (iNowMinute < 10) {//判断分钟是否小于10
+        iNowMinute = '0' + iNowMinute;//加上字符0
     }
-    if (nowSecond < 10) {
-        nowSecond = "0" + nowSecond;
+    if (iNowSecond < 10) {//判断秒数是否小于10
+        iNowSecond = '0' + iNowSecond;//加上字符0
     }
 
-    var weeks = getWeeks(nowDate);
+    var iCutWeeks = getWeeks(oNowDate);//获取周次
 
     //输出信息
-    document.getElementById("timeShow").innerHTML = "当前时间&nbsp" + nowYear + "年" + nowMonth + "月" + nowDay + "日" + Weekday[nowWeek] + "&nbsp" + nowHour + ":" + nowMinute + ":" + nowSecond + "&nbsp" + "本学期第" + weeks + "周";
+    document.getElementById('timeShow').innerHTML = '当前时间&nbsp' + iNowYear + '年' + iNowMonth + '月' + iNowDay + '日' + aWeekday[iNowWeek] + '&nbsp' + iNowHour + ':' + iNowMinute + ':' + iNowSecond + '&nbsp' + '本学期第' + iCutWeeks + '周';
 }
 
 //获取周次
-function getWeeks(nowDate) {
-    var startDate = new Date(2019, 2, 18);//学期起始时间
-    startDate.setMonth(startDate.getMonth() - 1);
-    var differenceDate = nowDate - startDate;
-    var cDay = Math.floor(differenceDate / (3600 * 24 * 1000));
-    var weeks = parseInt(cDay / 7) + 1;
-    return weeks;
+function getWeeks(oNowDate) {
+    var oStartDate = new Date(2019, 2, 18);//学期起始时间
+    oStartDate.setMonth(oStartDate.getMonth() - 1);//月份差值-1
+    var oCutDate = oNowDate - oStartDate;//实际日期差
+    var iCutDay = Math.floor(oCutDate / (3600 * 24 * 1000));//转换天数
+    var iCutWeeks = parseInt(iCutDay / 7) + 1;//计算差日期
+    return iCutWeeks;//返回周次
 }
 
+//获取课程标签e.g'#class11'
+function getClassTag(iWeek, iLesson) {
+    var sClassTag = '#class' + iWeek + iLesson;//制作标签
+    return sClassTag;//返回值
+}
 
-//格式化表格
-function setCurriculumFormat() {
-    //选择课程教室并清空显示
-    for (var week = 1; week <= 7; week++) {
-        for (var course = 1; course <= 5; course++) {
-            var classTag = "#class" + week + course;
-            var roomTag = "#room" + week + course;
-            //var classText = document.getElementById(classReturn);
-            $(classTag).css("display", "none");
-            $(roomTag).css("display", "none");
+//获取教室标签e.g'#room11'
+function getRoomTag(iWeek, iLesson) {
+    var sRoomTag = '#room' + iWeek + iLesson;//制作标签
+    return sRoomTag;//返回值
+}
+
+function setCurriculumFormat() {//格式化表格
+    for (var iWeek = 1; iWeek <= 7; iWeek++) {//选择课程教室并清空显示_周次选择
+        for (var iLesson = 1; iLesson <= 5; iLesson++) {//选择课程教室并清空显示_节次选择
+            var sClassTag = getClassTag(iWeek, iLesson);//获取课程标签
+            var sRoomTag = getClassTag(iWeek, iLesson);//获取教室标签
+
+            $(sClassTag).css('display', 'none');//设置标签不显示
+            $(sRoomTag).css('display', 'none');
         }
     }
 }
 
-//读取课表XML
+//console.log();
+//读取加载课表XML
 function loadCurriculumXML() {
     $.ajax({
-        url: "https://160512.github.io/MyLoveWeb/XML/Curriculum.xml",
-        dataType: 'xml',
-        type: 'GET',
-        timeout: 2000,
-        error: function (xml) {
-            alert("!!!加载XML文件出错!!!联系老公！！！");
+        url: 'https://160512.github.io/MyLoveWeb/XML/Curriculum.xml',//发送请求的地址
+        dataType: 'xml',//预期服务器返回的数据类型
+        type: 'GET', //请求方式
+        timeout: 2000,//设置请求超时时间
+        error: function (xml) {//请求失败时调用此函数
+            alert('!!!加载XML文件出错!!!联系老公！！！');
         },
-        success: function (xml) {
-            //console.log();
+        success: function (xml) {//请求成功后的回调函数
+            $(xml).find('Week').each(function (i) {//查找所有Week节点并遍历
+                var iWeekNumber = $(this).attr('week');//获取周次
+                $(this).find('class').each(function (j) {//查找当前周次所有class节点并遍历
 
-            $(xml).find("Week").each(function (i) {//查找所有Week节点并遍历
-                var weekNumber = $(this).attr("week");//获取周次
-                $(this).find("class").each(function (j) {//查找当前周次所有class节点并遍历
+                    //var class_id = $(this).children('class');//获得子节点
+                    var iClassNumber = $(this).attr('class');//获取节次
+                    var iStartWeekNumber = $(this).attr('startWeek');//获取开始周次
+                    var iEndWeekNumber = $(this).attr('endWeek');//获取结束周次
+                    var sOoTSwitch = $(this).attr('OoT');//获取单双周或者全周
+                    var sRoom = $(this).attr('room');//获取教室
+                    var sClassName = $(this).text();//获取课程
 
-                    //var class_id = $(this).children("class");//获得子节点
-                    var classNumber = $(this).attr("class");//获取节次
-                    var startWeekNumber = $(this).attr("startWeek");//获取开始周次
-                    var endWeekNumber = $(this).attr("endWeek");//获取结束周次
-                    var OoTSwitch = $(this).attr("OoT");//获取单双周或者全周
-                    var room = $(this).attr("room");//获取教室
-                    var className = $(this).text();//获取课程
-
-                    //获取修改单双周
-                    switch (OoTSwitch) {
+                    switch (sOoTSwitch) {//获取修改单双周
                         case 'O':
-                            var OoTText = "单周";
+                            var sOoTText = '单周';
                             break;
                         case 'T':
-                            var OoTText = "双周";
+                            var sOoTText = '双周';
                             break;
                         case 'A':
-                            var OoTText = "周";
+                            var sOoTText = '周';
                             break;
                         case 'L':
-                            var OoTText = "临时";
+                            var sOoTText = '临时';
                             break;
                     }
 
                     //制作标签
-                    var classTag = "#class" + weekNumber + classNumber;
-                    var roomTag = "#room" + weekNumber + classNumber;
+                    var sClassTag = getClassTag(iWeekNumber, iClassNumber);
+                    var sRoomTag = getRoomTag(iWeekNumber, iClassNumber);
 
-                    //判断是否有课程
-                    if (className == "NULL") {//没有课程
-                        $(classTag).text(className);
-                        $(roomTag).text(room);
+                    if (sClassName == 'NULL') {//没有课程
+                        $(sClassTag).text(sClassName);
+                        $(sRoomTag).text(sRoom);
                     } else {//有课程
-                        //e.g
-                        //<p id="class25">选修食品<span class="startweek">4</span>-<span class="endweek">12</span>周<p id="room25">@北阶104</td>
-                        $(classTag).html(className + "<span class=\"startweek\">" + startWeekNumber + "</span>-<span class=\"endweek\">" + endWeekNumber + "</span>" + OoTText);
-                        $(roomTag).text("@" + room);
+                        //e.g.<p id="class25">选修食品<span class="startweek">4</span>-<span class="endweek">12</span>周<p id="room25">@北阶104</td>
+                        $(sClassTag).html(sClassName + '<span class=\"startweek\">' + iStartWeekNumber + '</span>-<span class=\"endweek\">' + iEndWeekNumber + '</span>' + sOoTText);
+                        $(sRoomTag).text('@' + sRoom);
 
-                        //显示列表
-                        $(classTag).css("display", "block");
-                        $(roomTag).css("display", "block");
+                        $(sClassTag).css('display', 'block');//显示列表
+                        $(sRoomTag).css('display', 'block');//显示列表
                     }
                 });
             });
@@ -150,40 +146,43 @@ function loadCurriculumXML() {
     });
 }
 
-//判断单双周课程
-function coursesSwitch(weeks) {
-    //判断单双周
-    if (weeks % 2 == 0) {
-        //双周
-        //遍历课程classXX
-        for (var week = 1; week <= 7; week++) {
-            for (var course = 1; course <= 5; course++) {
-                //制作ID
-                var ClassTag = "#class" + week + course;
-                var roomTag = "#room" + week + course;
-                //读取ID对应P标签的内容
-                var classText = $(ClassTag).text();
-                //判断是否有相反的"单周"内容
-                if (classText.indexOf("单") != -1) {
-                    $(ClassTag).css("display","none");
-                    $(roomTag).css("display", "none");
+//判断是否含有'单''双'周关键字
+function hasClassTagString(sClassTag) {
+    var sClassText = $(sClassTag).text();//读取class标签内容
+    if (sClassText.indexOf('单') != -1) {//判断单周
+        return 1;
+    }
+    else if (sClassText.indexOf('双') != -1) {//判断双周
+        return 2;
+    }
+    else {//全周
+        return 0;
+    }
+}
+
+//判断单双周课程清除非当前周次课程
+function setCoursesOoT(iCutWeek) {
+    if (iCutWeek % 2 == 0) {//当前是双周
+        for (var iWeekNumber = 1; iWeekNumber <= 7; iWeekNumber++) {//遍历课程表_周次
+            for (var iLessonNumber = 1; iLessonNumber <= 5; iLessonNumber++) {//遍历课程表_节次
+                var sClassTag = getClassTag(iWeekNumber, iLessonNumber);//制作标签
+                var iReturnValue = hasClassTagString(sClassTag);//获取判断返回值
+                if (iReturnValue == 1) {//判断返回值
+                    var sRoomTag = getRoomTag(iWeekNumber, iLessonNumber);//隐藏单周课程
+                    $(sClassTag).css("display", "none");
+                    $(sRoomTag).css("display", "none");
                 }
             }
         }
-    } else {
-        //单周
-        //遍历课程classXX
-        for (var week = 1; week <= 7; week++) {
-            for (var course = 1; course <= 5; course++) {
-                //制作ID
-                var ClassTag = "#class" + week + course;
-                var roomTag = "#room" + week + course;
-                //读取ID对应P标签的内容
-                var classText = $(ClassTag).text();
-                //判断是否有相反的"双周"内容
-                if (classText.indexOf("双") != -1) {
-                    $(ClassTag).css("display", "none");
-                    $(roomTag).css("display", "none");
+    } else {//当前是单周
+        for (var iWeekNumber = 1; iWeekNumber <= 7; iWeekNumber++) {//遍历课程表_周次
+            for (var iLessonNumber = 1; iLessonNumber <= 5; iLessonNumber++) {//遍历课程表_节次
+                var sClassTag = getClassTag(iWeekNumber, iLessonNumber);//制作标签
+                var iReturnValue = hasClassTagString(sClassTag);//获取判断返回值
+                if (iReturnValue == 2) {//判断返回值
+                    var sRoomTag = getRoomTag(iWeekNumber, iLessonNumber);
+                    $(sClassTag).css("display", "none");//隐藏双周课程
+                    $(sRoomTag).css("display", "none");
                 }
             }
         }
@@ -191,23 +190,21 @@ function coursesSwitch(weeks) {
 }
 
 //判断课程时间是否在周次内
-function classSwitchTime(weeks) {
-    //遍历课程classXX
-    for (var week = 1; week <= 7; week++) {
-        for (var course = 1; course <= 5; course++) {
-            //制作ID
-            var ClassTag = "#class" + week + course;
-            var roomTag = "#room" + week + course;
-            //读取ID对应span.startweek标签的内容
-            var s = $(ClassTag).text();
-            var startWeek = $(ClassTag).children(".startweek").text();
-            var endWeek = $(ClassTag).children(".endweek").text();
-            if (s != "NULL") {
-                if (startWeek <= weeks && weeks <= endWeek) {
-
-                } else {
-                    $(ClassTag).css("display", "none");
-                    $(roomTag).css("display", "none");
+function setCourseWithinWeek(iCutWeek) {
+    for (var iWeekNumber = 1; iWeekNumber <= 7; iWeekNumber++) {//遍历课程表_周次
+        for (var iLessonNumber = 1; iLessonNumber <= 5; iLessonNumber++) {//遍历课程表_节次
+            var sClassTag = getClassTag(iWeekNumber, iLessonNumber);//制作class标签
+            var sGetClassTagText = $(sClassTag).text();//读取class标签内容
+            var iStartWeek = $(sClassTag).children(".startweek").text();//读取ID对应span.startweek标签的内容
+            var iEndWeek = $(sClassTag).children(".endweek").text();//读取ID对应span.endweek标签的内容
+            //console.log(iStartWeek);
+            if (sGetClassTagText != "NULL") {//判断class标签有课程
+                if (iStartWeek <= iCutWeek && iCutWeek <= iEndWeek) {//判断是否在周次内
+                    //在周次内不执行
+                } else {//不在周次内隐藏
+                    var sRoomTag = getRoomTag(iWeekNumber, iLessonNumber);
+                    $(sClassTag).css("display", "none");
+                    $(sRoomTag).css("display", "none");
                 }
             }
         }
@@ -215,56 +212,46 @@ function classSwitchTime(weeks) {
 }
 
 //选择课表
-function curriculumSwitch(nowDate) {
-    /*
-        选择父系Css
-        $('#room11').parent('.class').css("backgroundColor","#FFCCCC");
-        */
-
-    //获取当前时间
-    //.setHours(hour,min,sec,millisec)
-    //获取周次
-    var day = nowDate.getDay();
-    //获取时间
-    var nowTime = new Date();
-    nowTime.setHours(nowDate.getHours(), nowDate.getMinutes());
+function setNowLesson(oNowDate) {
+    var oNowTime = new Date();//创建时间对象
+    oNowTime.setHours(oNowDate.getHours(), oNowDate.getMinutes());//获取时间
 
     //设置冬季作息时间
-    var SchoolTime1st = new Date();
-    var BreakTime1st = new Date();
-    SchoolTime1st.setHours(7, 50);
-    BreakTime1st.setHours(9, 30);
+    var oSchoolTime1st = new Date();
+    var oBreakTime1st = new Date();
+    oSchoolTime1st.setHours(7, 50);
+    oBreakTime1st.setHours(9, 30);
 
-    var SchoolTime2nd = new Date();
-    var BreakTime2nd = new Date();
-    SchoolTime2nd.setHours(9, 50);
-    BreakTime2nd.setHours(11, 30);
+    var oSchoolTime2nd = new Date();
+    var oBreakTime2nd = new Date();
+    oSchoolTime2nd.setHours(9, 50);
+    oBreakTime2nd.setHours(11, 30);
 
-    var SchoolTime3rd = new Date();
-    var BreakTime3rd = new Date();
-    SchoolTime3rd.setHours(14, 20);
-    BreakTime3rd.setHours(16, 0);
+    var oSchoolTime3rd = new Date();
+    var oBreakTime3rd = new Date();
+    oSchoolTime3rd.setHours(14, 20);
+    oBreakTime3rd.setHours(16, 0);
 
-    var SchoolTime4th = new Date();
-    var BreakTime4th = new Date();
-    SchoolTime4th.setHours(16, 10);
-    BreakTime4th.setHours(17, 50);
+    var oSchoolTime4th = new Date();
+    var oBreakTime4th = new Date();
+    oSchoolTime4th.setHours(16, 10);
+    oBreakTime4th.setHours(17, 50);
 
-    var SchoolTime5th = new Date();
-    var BreakTime5th = new Date();
-    SchoolTime5th.setHours(19, 0);
-    BreakTime5th.setHours(20, 40);
+    var oSchoolTime5th = new Date();
+    var oBreakTime5th = new Date();
+    oSchoolTime5th.setHours(19, 0);
+    oBreakTime5th.setHours(20, 40);
 
 
     //转换夏季作息时间
     //判断时间处于夏季作息时间
-    var nowMonth = nowDate.getMonth() + 1;
-    if (nowMonth >= 5 && nowMonth < 10) {
+    var iNowMonth = oNowDate.getMonth() + 1;
+    if (iNowMonth >= 5 && iNowMonth < 10) {
         //设置夏季下午课程时间
-        SchoolTime3rd.setHours(14, 40);
-        BreakTime3rd.setHours(16, 20);
-        SchoolTime4th.setHours(16, 30);
-        BreakTime4th.setHours(18, 10);
+        oSchoolTime3rd.setHours(14, 40);
+        oBreakTime3rd.setHours(16, 20);
+        oSchoolTime4th.setHours(16, 30);
+        oBreakTime4th.setHours(18, 10);
         //修改表格作息时间
         $('#APreparationTime').html('14:30');
         $('#Time5th').html('14:40-15:25');
@@ -275,76 +262,77 @@ function curriculumSwitch(nowDate) {
 
 
     //判断时间
-    var nowClass = 0;
-    var nextClass = 0;
-    if (nowTime < SchoolTime1st) {//第一节课上课前
-        nextClass = 1;
+    var iNowClass = 0;
+    var iNextClass = 0;
+    if (oNowTime < oSchoolTime1st) {//第一节课上课前
+        iNextClass = 1;
     }
-    if (SchoolTime1st <= nowTime && nowTime <= BreakTime1st) {//第一节课上课上课中
-        nowClass = 1;
-        nextClass = 2;
+    if (oSchoolTime1st <= oNowTime && oNowTime <= oBreakTime1st) {//第一节课上课上课中
+        iNowClass = 1;
+        iNextClass = 2;
     }
-    if (BreakTime1st < nowTime && nowTime < SchoolTime2nd) {//第一节课下课后第二节课上课前
-        nextClass = 2;
+    if (oBreakTime1st < oNowTime && oNowTime < oSchoolTime2nd) {//第一节课下课后第二节课上课前
+        iNextClass = 2;
     }
-    if (SchoolTime2nd <= nowTime && nowTime <= BreakTime2nd) {//第二节课上课中
-        nowClass = 2;
-        nextClass = 3;
+    if (oSchoolTime2nd <= oNowTime && oNowTime <= oBreakTime2nd) {//第二节课上课中
+        iNowClass = 2;
+        iNextClass = 3;
     }
-    if (BreakTime2nd < nowTime && nowTime < SchoolTime3rd) {//第二节课下课后第三节课上课前
-        nextClass = 3;
+    if (oBreakTime2nd < oNowTime && oNowTime < oSchoolTime3rd) {//第二节课下课后第三节课上课前
+        iNextClass = 3;
     }
-    if (SchoolTime3rd <= nowTime && nowTime <= BreakTime3rd) {//第三节课上课中
-        nowClass = 3;
-        nextClass = 4;
+    if (oSchoolTime3rd <= oNowTime && oNowTime <= oBreakTime3rd) {//第三节课上课中
+        iNowClass = 3;
+        iNextClass = 4;
     }
-    if (BreakTime3rd < nowTime && nowTime < SchoolTime4th) {//第三节课下课后第四节课上课前
-        nextClass = 4;
+    if (oBreakTime3rd < oNowTime && oNowTime < oSchoolTime4th) {//第三节课下课后第四节课上课前
+        iNextClass = 4;
     }
-    if (SchoolTime4th <= nowTime && nowTime <= BreakTime4th) {//第四节课上课中
-        nowClass = 4;
-        nextClass = 5;
+    if (oSchoolTime4th <= oNowTime && oNowTime <= oBreakTime4th) {//第四节课上课中
+        iNowClass = 4;
+        iNextClass = 5;
     }
-    if (BreakTime4th < nowTime && nowTime < SchoolTime5th) {//第四节课下课后第五节课上课前
-        nextClass = 5;
+    if (oBreakTime4th < oNowTime && oNowTime < oSchoolTime5th) {//第四节课下课后第五节课上课前
+        iNextClass = 5;
     }
-    if (SchoolTime5th <= nowTime && nowTime <= BreakTime5th) {//第五节课上课中
-        nowClass = 5;
+    if (oSchoolTime5th <= oNowTime && oNowTime <= oBreakTime5th) {//第五节课上课中
+        iNowClass = 5;
     }
     //判断星期
-    var nowWeek = 0;
-    switch (day) {
+    var iWeekNumber = oNowDate.getDay();//获取周次
+    var iNowWeek = 0;
+    switch (iWeekNumber) {
         case 0:
-            nowWeek = 7;
+            iNowWeek = 7;
             break;
         case 1:
-            nowWeek = 1;
+            iNowWeek = 1;
             break;
         case 2:
-            nowWeek = 2;
+            iNowWeek = 2;
             break;
         case 3:
-            nowWeek = 3;
+            iNowWeek = 3;
             break;
         case 4:
-            nowWeek = 4;
+            iNowWeek = 4;
             break;
         case 5:
-            nowWeek = 5;
+            iNowWeek = 5;
             break;
         case 6:
-            nowWeek = 6;
+            iNowWeek = 6;
             break;
     }
 
-    //制作ID标签
-    var nowclassTag = "#class" + nowWeek + nowClass;
-    var nextclassTag = "#class" + nowWeek + nextClass;
+    //制作ID标签 iNowWeek iNowClass
+    var sNowClassTag = getClassTag(iWeekNumber, iNowClass);
+    var sNextClassTag = getClassTag(iWeekNumber, iNextClass);
 
     //修改当前课程背景颜色
-    $(nowclassTag).parent('.class').css("backgroundColor", "#CCFF99");
+    $(sNowClassTag).parent('.class').css("backgroundColor", "#CCFF99");
     //修改下一节课课程背景颜色
-    if (nextClass <= 5) {
-        $(nextclassTag).parent('.class').css("backgroundColor", "#FFCCCC");
+    if (iNextClass <= 5) {
+        $(sNextClassTag).parent('.class').css("backgroundColor", "#FFCCCC");
     }
 }
