@@ -65,13 +65,13 @@ function getWeeks(oNowDate) {
 //获取课程标签e.g'#class11'
 function getClassTag(iWeek, iLesson) {
     var sClassTag = '#class' + iWeek + iLesson;//制作标签
-    return sClassTag;//返回值
+    return sClassTag;//返回值class标签
 }
 
 //获取教室标签e.g'#room11'
 function getRoomTag(iWeek, iLesson) {
     var sRoomTag = '#room' + iWeek + iLesson;//制作标签
-    return sRoomTag;//返回值
+    return sRoomTag;//返回值room标签
 }
 
 function setCurriculumFormat() {//格式化表格
@@ -219,28 +219,28 @@ function setNowLesson(oNowDate) {
     //设置冬季作息时间
     var oSchoolTime1st = new Date();
     var oBreakTime1st = new Date();
-    oSchoolTime1st.setHours(7, 50);
-    oBreakTime1st.setHours(9, 30);
+    oSchoolTime1st.setHours(7, 50);//第一节课上课时间
+    oBreakTime1st.setHours(9, 30);//第一节课下课时间
 
     var oSchoolTime2nd = new Date();
     var oBreakTime2nd = new Date();
-    oSchoolTime2nd.setHours(9, 50);
-    oBreakTime2nd.setHours(11, 30);
+    oSchoolTime2nd.setHours(9, 50);//第二节课上课时间
+    oBreakTime2nd.setHours(11, 30);//第二节课下课时间
 
     var oSchoolTime3rd = new Date();
     var oBreakTime3rd = new Date();
-    oSchoolTime3rd.setHours(14, 20);
-    oBreakTime3rd.setHours(16, 0);
+    oSchoolTime3rd.setHours(14, 20);//第三节课上课时间
+    oBreakTime3rd.setHours(16, 0);//第三节课下课时间
 
     var oSchoolTime4th = new Date();
     var oBreakTime4th = new Date();
-    oSchoolTime4th.setHours(16, 10);
-    oBreakTime4th.setHours(17, 50);
+    oSchoolTime4th.setHours(16, 10);//第四节课上课时间
+    oBreakTime4th.setHours(17, 50);//第四节课下课时间
 
     var oSchoolTime5th = new Date();
     var oBreakTime5th = new Date();
-    oSchoolTime5th.setHours(19, 0);
-    oBreakTime5th.setHours(20, 40);
+    oSchoolTime5th.setHours(19, 0);//第五节课上课时间
+    oBreakTime5th.setHours(20, 40);//第五节课下课时间
 
 
     //转换夏季作息时间
@@ -248,10 +248,10 @@ function setNowLesson(oNowDate) {
     var iNowMonth = oNowDate.getMonth() + 1;
     if (iNowMonth >= 5 && iNowMonth < 10) {
         //设置夏季下午课程时间
-        oSchoolTime3rd.setHours(14, 40);
-        oBreakTime3rd.setHours(16, 20);
-        oSchoolTime4th.setHours(16, 30);
-        oBreakTime4th.setHours(18, 10);
+        oSchoolTime3rd.setHours(14, 40);//第三节课上课时间
+        oBreakTime3rd.setHours(16, 20);//第三节课下课时间
+        oSchoolTime4th.setHours(16, 30);//第四节课上课时间
+        oBreakTime4th.setHours(18, 10);//第四节课下课时间
         //修改表格作息时间
         $('#APreparationTime').html('14:30');
         $('#Time5th').html('14:40-15:25');
