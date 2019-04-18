@@ -10,9 +10,7 @@ function cyclicalFunction() {//循环函数
     if (OnlyRun == true) {//只执行一次判断
         setCurriculumFormat();//格式化课表
         loadCurriculumXML();//读取课表XML显示课表
-
-        
-
+        setCalendar(oNowDate);//设置日历
         OnlyRun = false;//改变控制变量
     }
 
@@ -46,21 +44,46 @@ function setTopTime(oNowDate) {
         iNowSecond = '0' + iNowSecond;//加上字符0
     }
 
-    var iCutWeeks = getWeeks(oNowDate);//获取周次
+    if (getTermStartAndEndDate(oNowDate) != false) {
+        var iCutWeeks = getWeeks(oNowDate);//获取周次
+        var sWeeks = '本学期第' + iCutWeeks + '周';//制作输出信息
+    } else {
+        var sWeeks = '处于假期内';//制作输出信息
+    }
 
     //输出信息
-    document.getElementById('timeShow').innerHTML = '当前时间&nbsp' + iNowYear + '年' + iNowMonth + '月' + iNowDay + '日' + aWeekday[iNowWeek] + '&nbsp' + iNowHour + ':' + iNowMinute + ':' + iNowSecond + '&nbsp' + '本学期第' + iCutWeeks + '周';
+    $('#timeShow').text('当前时间 ' + iNowYear + '年' + iNowMonth + '月' + iNowDay + '日' + aWeekday[iNowWeek] + ' ' + iNowHour + ':' + iNowMinute + ':' + iNowSecond + ' ' + sWeeks);
 }
 
 //获取周次
 function getWeeks(oNowDate) {
-    var oStartDate = new Date(2019, 2, 18);//学期起始时间
+    var vSummerDate = getTermStartAndEndDate(oNowDate);//获取学期阈值
+    var oStartDate = vSummerDate.StartDate;//学期起始时间
     oStartDate.setMonth(oStartDate.getMonth() - 1);//月份差值-1
     var oCutDate = oNowDate - oStartDate;//实际日期差
     var iCutDay = Math.floor(oCutDate / (3600 * 24 * 1000));//转换天数
     var iCutWeeks = parseInt(iCutDay / 7) + 1;//计算差日期
     return iCutWeeks;//返回周次
+
 }
+
+//获取学期开始结束日期
+function getTermStartAndEndDate(oNowDate) {
+    var oWinterStartDate = new Date(2019, 2, 18);//第一学期开始时间
+    var oWinterEndDate = new Date(2019, 7, 7);//第一学期结束时间
+    var oSummerStartDate = new Date(2019, 8, 27);//第二学期开始时间
+    var oSummerEndDate = new Date(2019, 12, 31);//第二学期结束时间
+
+    if (oWinterStartDate <= oNowDate && oNowDate <= oWinterEndDate) {//当前时间在冬季时间
+        var oWinterDate = { StartDate: oWinterStartDate, EndDate: oWinterEndDate };
+        return oWinterDate;//返回冬季作息时间
+    } else if (oSummerStartDate <= oNowDate && oNowDate <= oSummerEndDate) {//当前在夏季时间
+        var oSummerDate = { StartDate: oSummerStartDate, EndDate: oSummerEndDate };
+        return oSummerDate;//返回夏季作息时间
+    } else {//不处于学期内
+        return false;
+    }
+} 
 
 //获取课程标签e.g'#class11'
 function getClassTag(iWeek, iLesson) {
@@ -74,7 +97,14 @@ function getRoomTag(iWeek, iLesson) {
     return sRoomTag;//返回值room标签
 }
 
-function setCurriculumFormat() {//格式化表格
+//获取日历标签e.g'#calendar11'
+function getCalendarTag(iWeek, iLesson) {
+    var sCalendarTag = '#calendar' + iWeek + iLesson;//制作标签
+    return sCalendarTag;//返回值calendar标签
+}
+
+//格式化表格
+function setCurriculumFormat() {
     for (var iWeek = 1; iWeek <= 7; iWeek++) {//选择课程教室并清空显示_周次选择
         for (var iLesson = 1; iLesson <= 5; iLesson++) {//选择课程教室并清空显示_节次选择
             var sClassTag = getClassTag(iWeek, iLesson);//获取课程标签
@@ -86,7 +116,6 @@ function setCurriculumFormat() {//格式化表格
     }
 }
 
-//console.log();
 //读取加载课表XML
 function loadCurriculumXML() {
     $.ajax({
@@ -211,6 +240,15 @@ function setCourseWithinWeek(iCutWeek) {
     }
 }
 
+//判断是否为冬季作息时间
+function isWinterLearningTime(iNowMonth) {
+    if (iNowMonth >= 5 && iNowMonth < 10) {
+        return false;//夏季时间
+    } else {
+        return true;//冬季时间
+    }
+}
+
 //选择课表
 function setNowLesson(oNowDate) {
     var oNowTime = new Date();//创建时间对象
@@ -243,10 +281,11 @@ function setNowLesson(oNowDate) {
     oBreakTime5th.setHours(20, 40);//第五节课下课时间
 
 
-    //转换夏季作息时间
+
     //判断时间处于夏季作息时间
-    var iNowMonth = oNowDate.getMonth() + 1;
-    if (iNowMonth >= 5 && iNowMonth < 10) {
+    var bSummerOrWinter = isWinterLearningTime(oNowDate.getMonth() + 1);
+    //转换夏季作息时间
+    if (bSummerOrWinter == false) {
         //设置夏季下午课程时间
         oSchoolTime3rd.setHours(14, 40);//第三节课上课时间
         oBreakTime3rd.setHours(16, 20);//第三节课下课时间
@@ -300,29 +339,8 @@ function setNowLesson(oNowDate) {
     }
     //判断星期
     var iWeekNumber = oNowDate.getDay();//获取周次
-    var iNowWeek = 0;
-    switch (iWeekNumber) {
-        case 0:
-            iNowWeek = 7;
-            break;
-        case 1:
-            iNowWeek = 1;
-            break;
-        case 2:
-            iNowWeek = 2;
-            break;
-        case 3:
-            iNowWeek = 3;
-            break;
-        case 4:
-            iNowWeek = 4;
-            break;
-        case 5:
-            iNowWeek = 5;
-            break;
-        case 6:
-            iNowWeek = 6;
-            break;
+    if (iWeekNumber == 0) {
+        iWeekNumber = 7;
     }
 
     //制作ID标签 iNowWeek iNowClass
@@ -330,9 +348,47 @@ function setNowLesson(oNowDate) {
     var sNextClassTag = getClassTag(iWeekNumber, iNextClass);
 
     //修改当前课程背景颜色
-    $(sNowClassTag).parent('.class').css("backgroundColor", "#CCFF99");
+    $(sNowClassTag).parent('.lesson').parent('.class').css('backgroundColor', '#CCFF99');
     //修改下一节课课程背景颜色
     if (iNextClass <= 5) {
-        $(sNextClassTag).parent('.class').css("backgroundColor", "#FFCCCC");
+        $(sNextClassTag).parent('.lesson').parent('.class').css('backgroundColor', '#FFCCCC');
+        $(sNextClassTag).parent('.lesson').parent('.class').css('font-weight', '#bold');
     }
+}
+
+//显示日历
+function setCalendar(oNowDate) {
+    var iNowYear = oNowDate.getYear() + 1900;//获取当前年份
+    var iNowMonth = oNowDate.getMonth();//获取当前月份
+    var oFirstDayDate = new Date(iNowYear, iNowMonth, 1);//制作首日日期对象
+    var iFirstDayWeek = oFirstDayDate.getDay();//获取首日周次
+    if (iFirstDayWeek == 0) {//星期天为0
+        iFirstDayWeek = 7;//手动调节到7
+    }
+
+    var aMonthMaxDate = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];//创建月限数组
+    if (iNowYear % 4 == 0) {//判断是否为闰年
+        aMonthMaxDate[2] = '29'; //闰年29天
+    }
+    
+    var iDay = 1;//设置首日变量
+    var bFirstDay = false;//第一天开始变量
+    var bLastDay = false;//最后一天结束变量
+    for (var iLessonNumber = 1; iLessonNumber <= 5; iLessonNumber++) {//遍历课程表_节次
+        for (var iWeekNumber = 1; iWeekNumber <= 7; iWeekNumber++) {//遍历课程表_周次
+            if (iFirstDayWeek == iWeekNumber) {//判断是否到达月首日周次
+                bFirstDay = true;
+            }
+            if (iDay > aMonthMaxDate[iNowMonth]) {//判断是否到达月末周次
+                bLastDay = true;
+            }
+            if (bFirstDay == true && bLastDay == false) {//两项同时成立输出
+                var sCalendarTag = getCalendarTag(iWeekNumber, iLessonNumber);
+                $(sCalendarTag).html(iDay);
+                iDay++;
+            }
+        }
+    }
+
+    console.log(iFirstDayWeek);
 }
