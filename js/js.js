@@ -43,12 +43,12 @@ function setTopTime(oNowDate) {
     if (iNowSecond < 10) {//判断秒数是否小于10
         iNowSecond = '0' + iNowSecond;//加上字符0
     }
-
+    var sWeeks;
     if (getTermStartAndEndDate(oNowDate) != false) {
         var iCutWeeks = getWeeks(oNowDate);//获取周次
-        var sWeeks = '本学期第' + iCutWeeks + '周';//制作输出信息
+        sWeeks = '本学期第' + iCutWeeks + '周';//制作输出信息
     } else {
-        var sWeeks = '处于假期内';//制作输出信息
+        sWeeks = '处于假期内';//制作输出信息
     }
 
     //输出信息
@@ -138,19 +138,20 @@ function loadCurriculumXML() {
                     var sOoTSwitch = $(this).attr('OoT');//获取单双周或者全周
                     var sRoom = $(this).attr('room');//获取教室
                     var sClassName = $(this).text();//获取课程
+                    var sOoTText;
 
                     switch (sOoTSwitch) {//获取修改单双周
                         case 'O':
-                            var sOoTText = '单周';
+                            sOoTText = '单周';
                             break;
                         case 'T':
-                            var sOoTText = '双周';
+                            sOoTText = '双周';
                             break;
                         case 'A':
-                            var sOoTText = '周';
+                            sOoTText = '周';
                             break;
                         case 'L':
-                            var sOoTText = '临时';
+                            sOoTText = '临时';
                             break;
                     }
 
@@ -191,25 +192,25 @@ function hasClassTagString(sClassTag) {
 
 //判断单双周课程清除非当前周次课程
 function setCoursesOoT(iCutWeek) {
+    var iWeekNumber,iLessonNumber;//声明变量周次节次
+    var sClassTag,sRoomTag;//声明标签变量
     if (iCutWeek % 2 == 0) {//当前是双周
-        for (var iWeekNumber = 1; iWeekNumber <= 7; iWeekNumber++) {//遍历课程表_周次
-            for (var iLessonNumber = 1; iLessonNumber <= 5; iLessonNumber++) {//遍历课程表_节次
-                var sClassTag = getClassTag(iWeekNumber, iLessonNumber);//制作标签
-                var iReturnValue = hasClassTagString(sClassTag);//获取判断返回值
-                if (iReturnValue == 1) {//判断返回值
-                    var sRoomTag = getRoomTag(iWeekNumber, iLessonNumber);//隐藏单周课程
+        for (iWeekNumber = 1; iWeekNumber <= 7; iWeekNumber++) {//遍历课程表_周次
+            for (iLessonNumber = 1; iLessonNumber <= 5; iLessonNumber++) {//遍历课程表_节次
+                sClassTag = getClassTag(iWeekNumber, iLessonNumber);//制作标签
+                if (hasClassTagString(sClassTag) == 1) {//判断返回值
+                    sRoomTag = getRoomTag(iWeekNumber, iLessonNumber);//隐藏单周课程
                     $(sClassTag).css("display", "none");
                     $(sRoomTag).css("display", "none");
                 }
             }
         }
     } else {//当前是单周
-        for (var iWeekNumber = 1; iWeekNumber <= 7; iWeekNumber++) {//遍历课程表_周次
-            for (var iLessonNumber = 1; iLessonNumber <= 5; iLessonNumber++) {//遍历课程表_节次
-                var sClassTag = getClassTag(iWeekNumber, iLessonNumber);//制作标签
-                var iReturnValue = hasClassTagString(sClassTag);//获取判断返回值
-                if (iReturnValue == 2) {//判断返回值
-                    var sRoomTag = getRoomTag(iWeekNumber, iLessonNumber);
+        for (iWeekNumber = 1; iWeekNumber <= 7; iWeekNumber++) {//遍历课程表_周次
+            for (iLessonNumber = 1; iLessonNumber <= 5; iLessonNumber++) {//遍历课程表_节次
+                sClassTag = getClassTag(iWeekNumber, iLessonNumber);//制作标签
+                if (hasClassTagString(sClassTag) == 2) {//判断返回值
+                    sRoomTag = getRoomTag(iWeekNumber, iLessonNumber);
                     $(sClassTag).css("display", "none");//隐藏双周课程
                     $(sRoomTag).css("display", "none");
                 }
@@ -389,6 +390,5 @@ function setCalendar(oNowDate) {
             }
         }
     }
-
     console.log(iFirstDayWeek);
 }
