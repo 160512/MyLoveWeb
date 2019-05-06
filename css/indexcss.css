@@ -130,10 +130,14 @@ tr.header, tr.time, td.time {
 td.class {
     position: relative;
     background-color: #CCFFFF;
+    transition:background-color .5s;
+    -moz-transition:background-color .5s; /* Firefox 4 */
+    -webkit-transition:background-color .5s; /* Safari and Chrome */
+    -o-transition:background-color .5s; /* Opera */
 }
 
 td.class:hover {
-    background: #FFCCCC;
+    background-color: #FFCCCC;
 }
 
 div.calendar {

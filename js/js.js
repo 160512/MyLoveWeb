@@ -118,6 +118,7 @@ function setCurriculumFormat() {
 
 //读取加载课表XML
 function loadCurriculumXML() {
+    var iTimeFadeIn=1000;
     $.ajax({
         url: 'https://160512.github.io/MyLoveWeb/XML/Curriculum.xml',//发送请求的地址
         dataType: 'xml',//预期服务器返回的数据类型
@@ -167,8 +168,12 @@ function loadCurriculumXML() {
                         $(sClassTag).html(sClassName + '<span class=\"startweek\">' + iStartWeekNumber + '</span>-<span class=\"endweek\">' + iEndWeekNumber + '</span>' + sOoTText);
                         $(sRoomTag).text('@' + sRoom);
 
-                        $(sClassTag).css('display', 'block');//显示列表
-                        $(sRoomTag).css('display', 'block');//显示列表
+                        $(sClassTag).fadeIn(iTimeFadeIn);
+                        $(sRoomTag).fadeIn(iTimeFadeIn);
+                        iTimeFadeIn=iTimeFadeIn+200;
+
+                        //$(sClassTag).css('display', 'block');//显示列表
+                        //$(sRoomTag).css('display', 'block');//显示列表
                     }
                 });
             });
@@ -260,22 +265,18 @@ function setNowLesson(oNowDate) {
     var oBreakTime1st = new Date();
     oSchoolTime1st.setHours(7, 50);//第一节课上课时间
     oBreakTime1st.setHours(9, 30);//第一节课下课时间
-
     var oSchoolTime2nd = new Date();
     var oBreakTime2nd = new Date();
     oSchoolTime2nd.setHours(9, 50);//第二节课上课时间
     oBreakTime2nd.setHours(11, 30);//第二节课下课时间
-
     var oSchoolTime3rd = new Date();
     var oBreakTime3rd = new Date();
     oSchoolTime3rd.setHours(14, 20);//第三节课上课时间
     oBreakTime3rd.setHours(16, 0);//第三节课下课时间
-
     var oSchoolTime4th = new Date();
     var oBreakTime4th = new Date();
     oSchoolTime4th.setHours(16, 10);//第四节课上课时间
     oBreakTime4th.setHours(17, 50);//第四节课下课时间
-
     var oSchoolTime5th = new Date();
     var oBreakTime5th = new Date();
     oSchoolTime5th.setHours(19, 0);//第五节课上课时间
