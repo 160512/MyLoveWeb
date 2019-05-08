@@ -80,7 +80,7 @@ a:hover, a:active {
     color: #f60;
 }
 
-.betabody{
+.betabodydiv{
     transform:rotate(90deg);
     -ms-transform:rotate(90deg); 	/* IE 9 */
     -moz-transform:rotate(90deg); 	/* Firefox */
