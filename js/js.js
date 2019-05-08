@@ -57,14 +57,12 @@ function setTopTime(oNowDate) {
 
 //获取周次
 function getWeeks(oNowDate) {
-    var vSummerDate = getTermStartAndEndDate(oNowDate);//获取学期阈值
-    var oStartDate = vSummerDate.StartDate;//学期起始时间
-    oStartDate.setMonth(oStartDate.getMonth() - 1);//月份差值-1
-    var oCutDate = oNowDate - oStartDate;//实际日期差
-    var iCutDay = Math.floor(oCutDate / (3600 * 24 * 1000));//转换天数
-    var iCutWeeks = parseInt(iCutDay / 7) + 1;//计算差日期
-    return iCutWeeks;//返回周次
-
+        var oStartDate = getTermStartAndEndDate(oNowDate).StartDate;//学期起始时间
+        oStartDate.setMonth(oStartDate.getMonth() - 1);//月份差值-1
+        var oCutDate = oNowDate - oStartDate;//实际日期差
+        var iCutDay = Math.floor(oCutDate / (3600 * 24 * 1000));//转换天数
+        var iCutWeeks = parseInt(iCutDay / 7) + 1;//计算差日期
+        return iCutWeeks;//返回周次
 }
 
 //获取学期开始结束日期
@@ -376,6 +374,7 @@ function setCalendar(oNowDate) {
     var iDay = 1;//设置首日变量
     var bFirstDay = false;//第一天开始变量
     var bLastDay = false;//最后一天结束变量
+    var iTimeFadeIn=1000;
     for (var iLessonNumber = 1; iLessonNumber <= 5; iLessonNumber++) {//遍历课程表_节次
         for (var iWeekNumber = 1; iWeekNumber <= 7; iWeekNumber++) {//遍历课程表_周次
             if (iFirstDayWeek == iWeekNumber) {//判断是否到达月首日周次
@@ -385,11 +384,14 @@ function setCalendar(oNowDate) {
                 bLastDay = true;
             }
             if (bFirstDay == true && bLastDay == false) {//两项同时成立输出
-                var sCalendarTag = getCalendarTag(iWeekNumber, iLessonNumber);
-                $(sCalendarTag).html(iDay);
-                iDay++;
+                var sCalendarTag = getCalendarTag(iWeekNumber, iLessonNumber);//制作标签
+                $(sCalendarTag).html(iDay);//输出日期
+                iDay++;//日期加一
+                $(sCalendarTag).css("display", "none");//
+                $(sCalendarTag).fadeIn(iTimeFadeIn);//
+                iTimeFadeIn = iTimeFadeIn + 100;//
             }
         }
     }
-    console.log(iFirstDayWeek);
+    //console.log(iFirstDayWeek);
 }
