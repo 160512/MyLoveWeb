@@ -1,6 +1,6 @@
 var OnlyRun = true;//单次循环
-var fnCyclical = setTimeout(cyclicalFunction, 500);//设定定时器，开始执行
 
+var fnCyclical = setTimeout(cyclicalFunction, 1000);//设定定时器，开始执行
 function cyclicalFunction() {//循环函数
     clearTimeout(fnCyclical);//清除定时器
 
@@ -18,7 +18,7 @@ function cyclicalFunction() {//循环函数
     setCourseWithinWeek(getWeeks(oNowDate));//判断课程时间是否在周次内
     setNowLesson(oNowDate);//选择课表 判断夏冬季作息时间
 
-    fnCyclical = setTimeout(cyclicalFunction, 500);//设定定时器，循环执行
+    fnCyclical = setTimeout(cyclicalFunction, 1000);//设定定时器，循环执行
 }
 
 //设置顶部时间
@@ -26,22 +26,20 @@ function setTopTime(oNowDate) {
     var iNowYear = oNowDate.getYear() + 1900;//获取年份
     var iNowMonth = oNowDate.getMonth() + 1;//获取月份
     var iNowDay = oNowDate.getDate();//获取日期
-
     var aWeekday = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];//创建星期数组
     var iNowWeek = oNowDate.getDay();//获取星期数
+    var aNowHour = oNowDate.getHours();//获取小时
+    var aNowMinute = oNowDate.getMinutes();//获取分钟
+    var aNowSecond = oNowDate.getSeconds();//获取秒
 
-    var iNowHour = oNowDate.getHours();//获取小时
-    var iNowMinute = oNowDate.getMinutes();//获取分钟
-    var iNowSecond = oNowDate.getSeconds();//获取秒
-
-    if (iNowHour < 10) {//判断小时是否小于10
-        iNowHour = '0' + iNowHour;//加上字符0
+    if (aNowHour < 10) {//判断小时是否小于10
+        aNowHour = '0' + aNowHour;//加上字符0
     }
-    if (iNowMinute < 10) {//判断分钟是否小于10
-        iNowMinute = '0' + iNowMinute;//加上字符0
+    if (aNowMinute < 10) {//判断分钟是否小于10
+        aNowMinute = '0' + aNowMinute;//加上字符0
     }
-    if (iNowSecond < 10) {//判断秒数是否小于10
-        iNowSecond = '0' + iNowSecond;//加上字符0
+    if (aNowSecond < 10) {//判断秒数是否小于10
+        aNowSecond = '0' + aNowSecond;//加上字符0
     }
     var sWeeks;
     if (getTermStartAndEndDate(oNowDate) != false) {
@@ -52,7 +50,7 @@ function setTopTime(oNowDate) {
     }
 
     //输出信息
-    $('#timeShow').text('当前时间 ' + iNowYear + '年' + iNowMonth + '月' + iNowDay + '日' + aWeekday[iNowWeek] + ' ' + iNowHour + ':' + iNowMinute + ':' + iNowSecond + ' ' + sWeeks);
+    $('#timeShow').text('当前时间 ' + iNowYear + '年' + iNowMonth + '月' + iNowDay + '日' + aWeekday[iNowWeek] + ' ' + aNowHour + ':' + aNowMinute + ':' + aNowSecond + ' ' + sWeeks);
 }
 
 //获取周次
@@ -71,7 +69,6 @@ function getTermStartAndEndDate(oNowDate) {
     var oWinterEndDate = new Date(2019, 7, 7);//第一学期结束时间
     var oSummerStartDate = new Date(2019, 8, 27);//第二学期开始时间
     var oSummerEndDate = new Date(2019, 12, 31);//第二学期结束时间
-
     if (oWinterStartDate <= oNowDate && oNowDate <= oWinterEndDate) {//当前时间在冬季时间
         var oWinterDate = { StartDate: oWinterStartDate, EndDate: oWinterEndDate };
         return oWinterDate;//返回冬季作息时间
@@ -137,8 +134,8 @@ function loadCurriculumXML() {
                     var sOoTSwitch = $(this).attr('OoT');//获取单双周或者全周
                     var sRoom = $(this).attr('room');//获取教室
                     var sClassName = $(this).text();//获取课程
-                    var sOoTText;
 
+                    var sOoTText;
                     switch (sOoTSwitch) {//获取修改单双周
                         case 'O':
                             sOoTText = '单周';
@@ -162,14 +159,13 @@ function loadCurriculumXML() {
                         $(sClassTag).text(sClassName);
                         $(sRoomTag).text(sRoom);
                     } else {//有课程
-                        //e.g.<p id="class25">选修食品<span class="startweek">4</span>-<span class="endweek">12</span>周<p id="room25">@北阶104</td>
+                        //e.g.<p id='class25'>选修食品<span class='startweek'>4</span>-<span class='endweek'>12</span>周<p id='room25'>@北阶104</td>
                         $(sClassTag).html(sClassName + '<span class=\"startweek\">' + iStartWeekNumber + '</span>-<span class=\"endweek\">' + iEndWeekNumber + '</span>' + sOoTText);
                         $(sRoomTag).text('@' + sRoom);
 
                         $(sClassTag).fadeIn(iTimeFadeIn);
                         $(sRoomTag).fadeIn(iTimeFadeIn);
                         iTimeFadeIn=iTimeFadeIn+200;
-
                         //$(sClassTag).css('display', 'block');//显示列表
                         //$(sRoomTag).css('display', 'block');//显示列表
                     }
@@ -188,7 +184,7 @@ function hasClassTagString(sClassTag) {
     else if (sClassText.indexOf('双') != -1) {//判断双周
         return 2;
     }
-    else {//全周
+    else {//全周or没有课程
         return 0;
     }
 }
@@ -203,8 +199,8 @@ function setCoursesOoT(iCutWeek) {
                 sClassTag = getClassTag(iWeekNumber, iLessonNumber);//制作标签
                 if (hasClassTagString(sClassTag) == 1) {//判断返回值
                     sRoomTag = getRoomTag(iWeekNumber, iLessonNumber);//隐藏单周课程
-                    $(sClassTag).css("display", "none");
-                    $(sRoomTag).css("display", "none");
+                    $(sClassTag).css('display', 'none');
+                    $(sRoomTag).css('display', 'none');
                 }
             }
         }
@@ -214,8 +210,8 @@ function setCoursesOoT(iCutWeek) {
                 sClassTag = getClassTag(iWeekNumber, iLessonNumber);//制作标签
                 if (hasClassTagString(sClassTag) == 2) {//判断返回值
                     sRoomTag = getRoomTag(iWeekNumber, iLessonNumber);
-                    $(sClassTag).css("display", "none");//隐藏双周课程
-                    $(sRoomTag).css("display", "none");
+                    $(sClassTag).css('display', 'none');//隐藏双周课程
+                    $(sRoomTag).css('display', 'none');
                 }
             }
         }
@@ -228,16 +224,16 @@ function setCourseWithinWeek(iCutWeek) {
         for (var iLessonNumber = 1; iLessonNumber <= 5; iLessonNumber++) {//遍历课程表_节次
             var sClassTag = getClassTag(iWeekNumber, iLessonNumber);//制作class标签
             var sGetClassTagText = $(sClassTag).text();//读取class标签内容
-            var iStartWeek = $(sClassTag).children(".startweek").text();//读取ID对应span.startweek标签的内容
-            var iEndWeek = $(sClassTag).children(".endweek").text();//读取ID对应span.endweek标签的内容
+            var iStartWeek = $(sClassTag).children('.startweek').text();//读取ID对应span.startweek标签的内容
+            var iEndWeek = $(sClassTag).children('.endweek').text();//读取ID对应span.endweek标签的内容
             //console.log(iStartWeek);
-            if (sGetClassTagText != "NULL") {//判断class标签有课程
+            if (sGetClassTagText != 'NULL') {//判断class标签有课程
                 if (iStartWeek <= iCutWeek && iCutWeek <= iEndWeek) {//判断是否在周次内
                     //在周次内不执行
                 } else {//不在周次内隐藏
                     var sRoomTag = getRoomTag(iWeekNumber, iLessonNumber);
-                    $(sClassTag).css("display", "none");
-                    $(sRoomTag).css("display", "none");
+                    $(sClassTag).css('display', 'none');
+                    $(sRoomTag).css('display', 'none');
                 }
             }
         }
@@ -253,39 +249,31 @@ function isWinterLearningTime(iNowMonth) {
     }
 }
 
+//获取小时分钟事件对象
+function getSchoolOrBreakTime(iHour,iMinute){
+    var oReturnTime=new Date();
+    oReturnTime.setHours(iHour,iMinute);
+    return oReturnTime;
+}
+
 //选择课表
 function setNowLesson(oNowDate) {
-    var oNowTime = new Date();//创建时间对象
-    oNowTime.setHours(oNowDate.getHours(), oNowDate.getMinutes());//获取时间
+    var oNowTime = getSchoolOrBreakTime(oNowDate.getHours(), oNowDate.getMinutes());//当前获取时间
 
     //设置冬季作息时间
-    var oSchoolTime1st = new Date();
-    var oBreakTime1st = new Date();
-    oSchoolTime1st.setHours(7, 50);//第一节课上课时间
-    oBreakTime1st.setHours(9, 30);//第一节课下课时间
-    var oSchoolTime2nd = new Date();
-    var oBreakTime2nd = new Date();
-    oSchoolTime2nd.setHours(9, 50);//第二节课上课时间
-    oBreakTime2nd.setHours(11, 30);//第二节课下课时间
-    var oSchoolTime3rd = new Date();
-    var oBreakTime3rd = new Date();
-    oSchoolTime3rd.setHours(14, 20);//第三节课上课时间
-    oBreakTime3rd.setHours(16, 0);//第三节课下课时间
-    var oSchoolTime4th = new Date();
-    var oBreakTime4th = new Date();
-    oSchoolTime4th.setHours(16, 10);//第四节课上课时间
-    oBreakTime4th.setHours(17, 50);//第四节课下课时间
-    var oSchoolTime5th = new Date();
-    var oBreakTime5th = new Date();
-    oSchoolTime5th.setHours(19, 0);//第五节课上课时间
-    oBreakTime5th.setHours(20, 40);//第五节课下课时间
+    var oSchoolTime1st = getSchoolOrBreakTime(7,50);//第一节课上课时间
+    var oBreakTime1st = getSchoolOrBreakTime(9,30);//第一节课下课时间
+    var oSchoolTime2nd = getSchoolOrBreakTime(9, 50);//第二节课上课时间
+    var oBreakTime2nd = getSchoolOrBreakTime(11, 30);//第二节课下课时间
+    var oSchoolTime3rd = getSchoolOrBreakTime(14, 20);//第三节课上课时间
+    var oBreakTime3rd = getSchoolOrBreakTime(16, 0);//第三节课下课时间
+    var oSchoolTime4th = getSchoolOrBreakTime(16, 10);//第四节课上课时间
+    var oBreakTime4th = getSchoolOrBreakTime(17, 50);//第四节课下课时间
+    var oSchoolTime5th = getSchoolOrBreakTime(19, 0);//第五节课上课时间
+    var oBreakTime5th = getSchoolOrBreakTime(20, 40);//第五节课下课时间
 
-
-
-    //判断时间处于夏季作息时间
-    var bSummerOrWinter = isWinterLearningTime(oNowDate.getMonth() + 1);
     //转换夏季作息时间
-    if (bSummerOrWinter == false) {
+    if (isWinterLearningTime(oNowDate.getMonth() + 1) == false) {
         //设置夏季下午课程时间
         oSchoolTime3rd.setHours(14, 40);//第三节课上课时间
         oBreakTime3rd.setHours(16, 20);//第三节课下课时间
@@ -298,7 +286,6 @@ function setNowLesson(oNowDate) {
         $('#Time7th').html('16:30-17:15');
         $('#Time8th').html('17:25-18:10');
     }
-
 
     //判断时间
     var iNowClass = 0;
@@ -352,7 +339,6 @@ function setNowLesson(oNowDate) {
     //修改下一节课课程背景颜色
     if (iNextClass <= 5) {
         $(sNextClassTag).parent('.lesson').parent('.class').css('backgroundColor', '#FFCCCC');
-        $(sNextClassTag).parent('.lesson').parent('.class').css('font-weight', '#bold');
     }
 }
 
@@ -387,11 +373,25 @@ function setCalendar(oNowDate) {
                 var sCalendarTag = getCalendarTag(iWeekNumber, iLessonNumber);//制作标签
                 $(sCalendarTag).html(iDay);//输出日期
                 iDay++;//日期加一
-                $(sCalendarTag).css("display", "none");//
-                $(sCalendarTag).fadeIn(iTimeFadeIn);//
-                iTimeFadeIn = iTimeFadeIn + 100;//
+                $(sCalendarTag).css('display', 'none');//改变css显示
+                $(sCalendarTag).fadeIn(iTimeFadeIn);//渐变显示
+                iTimeFadeIn = iTimeFadeIn + 100;//显示拖延0.1s
             }
         }
     }
     //console.log(iFirstDayWeek);
 }
+
+//___________________________________________________________
+//___________________________________________________________
+//BETAHTML JavaScript
+$(document).ready(function(){
+    var oWindowSizes={ height :0, width :0 };
+    oWindowSizes.height = $(window).height(); //获取浏览器当前窗口可视区域高度
+    oWindowSizes.width = $(window).width(); //获取浏览器当前窗口可视区域宽度
+    console.log(oWindowSizes);
+    if(oWindowSizes.height > oWindowSizes.width){
+        $('#maindiv').attr('class','betabodydiv');
+        $("body").width(oWindowSizes.width).height(oWindowSizes.height);
+    }
+});
