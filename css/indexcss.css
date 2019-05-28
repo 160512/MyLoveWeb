@@ -80,18 +80,6 @@ a:hover, a:active {
     color: #f60;
 }
 
-.betabodydiv{
-    height: 100%;
-    width: 100%;
-    transform:rotate(90deg);
-    -ms-transform:rotate(90deg); 	/* IE 9 */
-    -moz-transform:rotate(90deg); 	/* Firefox */
-    -webkit-transform:rotate(90deg); /* Safari 和 Chrome */
-    -o-transform:rotate(90deg); 	/* Opera */
-    transform-origin: 100% 0 0;
-    -webkit-transform-origin: 50% 50% 0;
-}
-
 /*顶部预留框架*/
 div#top {
     height: 20px;

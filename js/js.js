@@ -381,17 +381,3 @@ function setCalendar(oNowDate) {
     }
     //console.log(iFirstDayWeek);
 }
-
-//___________________________________________________________
-//___________________________________________________________
-//BETAHTML JavaScript
-$(document).ready(function(){
-    var oWindowSizes={ height :0, width :0 };
-    oWindowSizes.height = $(window).height(); //获取浏览器当前窗口可视区域高度
-    oWindowSizes.width = $(window).width(); //获取浏览器当前窗口可视区域宽度
-    console.log(oWindowSizes);
-    if(oWindowSizes.height > oWindowSizes.width){
-        $('#maindiv').attr('class','betabodydiv');
-        $("body").width(oWindowSizes.width).height(oWindowSizes.height);
-    }
-});
